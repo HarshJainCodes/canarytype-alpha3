@@ -4,7 +4,11 @@
     <navigation-panels></navigation-panels>
     <v-main>
       <v-container class="h-100">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component"> </component>
+          </keep-alive>
+        </router-view>
       </v-container>
     </v-main>
   </v-app>
