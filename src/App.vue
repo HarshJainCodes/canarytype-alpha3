@@ -17,6 +17,26 @@
 <script setup>
 import TopNavBar from './components/TopNavBar.vue'
 import NavigationPanels from './components/NavigationPanels.vue'
+import { onMounted, onActivated } from 'vue'
+import { useUserDetailsStore } from './stores/userDetails'
+
+const userDetails = useUserDetailsStore()
+
+onMounted(() => {
+  setLoginStatusIfComingFromAnotherRoute()
+})
+
+onActivated(() => {
+  setLoginStatusIfComingFromAnotherRoute()
+})
+
+const setLoginStatusIfComingFromAnotherRoute = () => {
+  const userName = localStorage.getItem('canaryalpha3Username')
+  if (userName) {
+    userDetails.userName = userName
+    userDetails.setIsLoggedIn(true)
+  }
+}
 </script>
 
 <style scoped></style>

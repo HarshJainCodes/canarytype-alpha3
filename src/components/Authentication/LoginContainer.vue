@@ -40,7 +40,7 @@
 
         <v-checkbox label="Show Password" v-model="showPassword"></v-checkbox>
 
-        <v-btn :disabled="isActionBtnDisabled" @click="registerUser">
+        <v-btn :disabled="isActionBtnDisabled" @click="emit('onSubmit')">
           <slot name="actionBtn"> </slot>
         </v-btn>
       </div>
@@ -71,7 +71,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['update:userName', 'update:password'])
+const emit = defineEmits(['update:userName', 'update:password', 'onSubmit'])
 
 const userName = ref('')
 

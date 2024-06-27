@@ -1,9 +1,22 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export const useUserDetailsStore = defineStore('userDetails', () => {
-  const isLoggedIn = ref(false)
-  const userName = ref('')
+    const router = useRouter()
 
-  return { isLoggedIn, userName }
+    const isLoggedIn = ref(false)
+    const userName = ref('')
+
+    function setIsLoggedIn(val) {
+        isLoggedIn.value = val
+    }
+
+    function preventUnauthorizedRouteNavigation() {
+        if (!isLoggedIn.value) {
+            router.push('/Login')
+        }
+    }
+
+    return { isLoggedIn, userName, setIsLoggedIn, preventUnauthorizedRouteNavigation }
 })
