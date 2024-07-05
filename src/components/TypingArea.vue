@@ -29,24 +29,47 @@
 </template>
 
 <script setup>
+import { onDeactivated } from 'vue'
+import { onActivated } from 'vue'
 import { ref, onMounted, defineEmits } from 'vue'
 
+const INITIAL_TIME = 20
+
 const typingStarted = ref(false)
-const time = ref(5)
+const time = ref(INITIAL_TIME)
+const resultSendToDB = ref(false)
+let timer
 
 const emit = defineEmits([
     'update:typingFinished',
     'update:lineChartData',
-    'update:rawLineChartData'
+    'update:rawLineChartData',
+    'update:typingSpeed'
 ])
 
 const stringToType = ref('')
 
 const wordsTypedPerSecond = new Array(time.value).fill('')
+const rawWordsTypedPerSecond = new Array(time.value).fill('')
 const typingSpeedPerSecond = new Array(time.value).fill(0)
 const rawTypingSpeedPerSecond = new Array(time.value).fill(0)
 
-onMounted(async () => {
+onActivated(() => {
+    if (typingStarted.value === true) {
+        fetchWordsFromBackend()
+        resetParams()
+    }
+})
+
+onMounted(() => {
+    fetchWordsFromBackend()
+})
+
+onDeactivated(() => {
+    clearInterval(timer)
+})
+
+const fetchWordsFromBackend = async () => {
     const res = await fetch(
         'https://canarytype-alpha3.azurewebsites.net/api/TypingArena/RandomWords'
     )
@@ -55,20 +78,30 @@ onMounted(async () => {
         const words = await res.json()
         stringToType.value = words.join(' ')
     }
-    console.log(stringToType.value)
-})
+}
+
+const resetParams = () => {
+    stringToType.value = ''
+    time.value = INITIAL_TIME
+    typingStarted.value = false
+    document.querySelector('textarea').value = ''
+    document.querySelector('.resultDisplay').innerHTML = ''
+    wordsTypedPerSecond.fill('')
+    rawWordsTypedPerSecond.fill('')
+}
 
 const startTimer = (event) => {
     if (!typingStarted.value) {
         typingStarted.value = true
 
-        const timer = setInterval(() => {
+        timer = setInterval(() => {
             if (time.value > 1) {
                 time.value--
             } else {
                 emit('update:typingFinished', true)
                 calculateTypingSpeed()
                 calculateTypingSpeedPerSecond()
+                sendDataToBackend()
                 clearInterval(timer)
             }
         }, 1000)
@@ -101,10 +134,20 @@ const addWordsToTimestamp = (key) => {
     if (key === 'Backspace') {
         if (wordsTypedPerSecond[index].length > 0) {
             wordsTypedPerSecond[index] = wordsTypedPerSecond[index].slice(0, -1)
+        } else {
+            // else block is required to make sure if you remove words then you remove it from correct index when it was typed
+            let indexToRemove = index - 1
+
+            while (wordsTypedPerSecond[indexToRemove].length === 0 && indexToRemove > 0) {
+                indexToRemove--
+            }
+            if (wordsTypedPerSecond[indexToRemove].length > 0) {
+                wordsTypedPerSecond[indexToRemove] = wordsTypedPerSecond[indexToRemove].slice(0, -1)
+            }
         }
     } else {
         if (key != undefined) {
-            console.log('entering key : ', key)
+            rawWordsTypedPerSecond[index] += key
             wordsTypedPerSecond[index] += key
         }
     }
@@ -125,7 +168,8 @@ const calculateTypingSpeed = () => {
         }
     }
 
-    console.log(Math.round((charsInTotalCorrectWords / 5) * 6))
+    const typingSpeed = Math.round((charsInTotalCorrectWords / 5) * (60 / INITIAL_TIME))
+    emit('update:typingSpeed', typingSpeed)
 }
 
 const calculateTypingSpeedPerSecond = () => {
@@ -140,10 +184,13 @@ const calculateTypingSpeedPerSecond = () => {
             ) {
                 correctCharTillNow++
             }
-            if (wordsTypedPerSecond[i][j] !== ' ') {
+            currWordIndex++
+        }
+
+        for (let j = 0; j < rawWordsTypedPerSecond[i].length; j++) {
+            if (rawWordsTypedPerSecond[i][j] !== ' ') {
                 rawCharTillNow++
             }
-            currWordIndex++
         }
 
         typingSpeedPerSecond[i] = (correctCharTillNow / 5) * (60 / (i + 1))
@@ -153,9 +200,14 @@ const calculateTypingSpeedPerSecond = () => {
     console.log(stringToType.value)
     console.log(wordsTypedPerSecond)
     console.log(typingSpeedPerSecond)
+    console.log(rawWordsTypedPerSecond)
 
     emit('update:lineChartData', typingSpeedPerSecond)
     emit('update:rawLineChartData', rawTypingSpeedPerSecond)
+}
+
+const sendDataToBackend = () => {
+    console.log('sending data to backend')
 }
 </script>
 
