@@ -37,7 +37,6 @@ const INITIAL_TIME = 20
 
 const typingStarted = ref(false)
 const time = ref(INITIAL_TIME)
-const resultSendToDB = ref(false)
 let timer
 
 const emit = defineEmits([
@@ -101,7 +100,6 @@ const startTimer = (event) => {
                 emit('update:typingFinished', true)
                 calculateTypingSpeed()
                 calculateTypingSpeedPerSecond()
-                sendDataToBackend()
                 clearInterval(timer)
             }
         }, 1000)
@@ -196,19 +194,10 @@ const calculateTypingSpeedPerSecond = () => {
         typingSpeedPerSecond[i] = (correctCharTillNow / 5) * (60 / (i + 1))
         rawTypingSpeedPerSecond[i] = (rawCharTillNow / 5) * (60 / (i + 1))
     }
-
-    console.log(stringToType.value)
-    console.log(wordsTypedPerSecond)
-    console.log(typingSpeedPerSecond)
-    console.log(rawWordsTypedPerSecond)
-
     emit('update:lineChartData', typingSpeedPerSecond)
     emit('update:rawLineChartData', rawTypingSpeedPerSecond)
 }
 
-const sendDataToBackend = () => {
-    console.log('sending data to backend')
-}
 </script>
 
 <style scoped>

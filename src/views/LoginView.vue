@@ -97,6 +97,7 @@ const onRegisterUser = async () => {
         localStorage.setItem('canaryalpha3Username', registerUserName.value)
         localStorage.setItem('canaryalpha3Token', response.token)
         userDetails.setIsLoggedIn(true)
+        userDetails.userName = registerUserName.value
         router.push('TypingArena')
     }
 }
@@ -120,6 +121,7 @@ const onLoginUser = async () => {
         localStorage.setItem('canaryalpha3Token', response.token)
 
         userDetails.setIsLoggedIn(true)
+        userDetails.userName = loginUserName.value
         router.push('TypingArena')
     } else if (res.status === 404) {
         toast.error('Invalid username or password')

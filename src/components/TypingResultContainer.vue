@@ -62,15 +62,50 @@
 </template>
 
 <script setup>
+import { onActivated, ref } from 'vue';
 import TypingResult from './TypingResult.vue'
 import { useUserDetailsStore } from '@/stores/userDetails'
+import { useToast } from 'vue-toastification';
 
 const props = defineProps(['lineChartData', 'rawLineChartData', 'typingSpeed'])
 const emit = defineEmits('update:typingFinished')
 
 const userDetails = useUserDetailsStore()
+const toast = useToast()
+
+const resultSentToDB = ref(false);
+
+onActivated(() => {
+    if (!resultSentToDB.value && userDetails.isLoggedIn){
+        sendDataToBackend();
+        resultSentToDB.value = true;
+    }
+})
 
 const returnToTypingArea = () => {
+    resultSentToDB.value = false;
     emit('update:typingFinished', false)
+}
+
+const sendDataToBackend = async () => {
+    const call = await fetch('https://canarytype-alpha3.azurewebsites.net/api/TypingArena/Submit', {
+        method: 'POST',
+        body: JSON.stringify({
+            submissionDate: new Date(),
+            score: props.typingSpeed,
+            username: userDetails.userName,
+            typingSpeedPerSecond: props.lineChartData,
+            rawTypingSpeedPerSecond: props.rawLineChartData
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+        }
+    })
+
+    if (call.status == 200){
+        toast('Result Saved Successfully', {
+            type: 'success'
+        })
+    }
 }
 </script>
