@@ -1,12 +1,24 @@
 <template>
-    <v-app>
+    <v-app class="h-100">
         <top-nav-bar></top-nav-bar>
         <navigation-panels></navigation-panels>
         <v-main>
-            <v-container class="h-100">
+            <v-container>
                 <router-view v-slot="{ Component }">
                     <keep-alive>
-                        <component :is="Component"> </component>
+                        <component
+                            :is="Component"
+                            class="w-100 h-100"
+                            @init-map="() => {
+                                console.log('the map emitted something')
+                            }"
+                            @load-map="(instance) => {
+                                console.log('the map has been loaded emitted from style(dot)load', instance)
+                            }"
+                            @zoom="(zoom) => {
+                                console.log('zoom is changing', zoom)
+                            }"
+                        > </component>
                     </keep-alive>
                 </router-view>
             </v-container>

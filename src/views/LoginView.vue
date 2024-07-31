@@ -87,7 +87,8 @@ const onRegisterUser = async () => {
         body: JSON.stringify({
             UserName: registerUserName.value,
             password: registerPass.value
-        })
+        }),
+        credentials: 'include'
     })
 
     const response = await res.json()
@@ -111,7 +112,8 @@ const onLoginUser = async () => {
         body: JSON.stringify({
             UserName: loginUserName.value,
             Password: loginPass.value
-        })
+        }),
+        credentials: 'include'
     })
 
     const response = await res.json()

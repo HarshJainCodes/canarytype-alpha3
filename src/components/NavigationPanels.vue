@@ -49,6 +49,11 @@ const navBarItems = computed(() => {
             name: 'Leaderboard',
             icon: 'mdi-trophy',
             disabled: !userDetails.isLoggedIn
+        },
+        {
+            name: 'MapVisualization',
+            icon: 'mdi-map-check',
+            disabled: false
         }
     ]
 })
