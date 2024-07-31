@@ -99,7 +99,8 @@ const sendDataToBackend = async () => {
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
-        }
+        },
+        credentials: 'include'
     })
 
     if (call.status == 200){
