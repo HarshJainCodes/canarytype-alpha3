@@ -49,7 +49,7 @@
     <v-divider class="mx-5" vertical></v-divider>
 
     <div :style="{ width: imageWidth + '%' }">
-      <v-img class="w-100 h-100" cover :src="imageUrl"> </v-img>
+      <img class="w-100 h-100" :src="imageUrl">
     </div>
   </div>
 </template>
