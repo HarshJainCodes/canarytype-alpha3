@@ -19,6 +19,7 @@
         "deck.gl": "^9.0.23",
         "mapbox-gl": "^3.5.2",
         "pinia": "^2.1.7",
+        "vite-plugin-vuetify": "^2.0.3",
         "vue": "^3.4.21",
         "vue-chartjs": "^5.3.1",
         "vue-router": "^4.3.0",
