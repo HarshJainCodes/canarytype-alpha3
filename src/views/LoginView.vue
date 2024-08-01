@@ -12,7 +12,7 @@
                 <login-container
                     :content-width="65"
                     :image-width="35"
-                    :image-url="'src/assets/images/loginPageBg.png'"
+                    :image-url="loginPageBg"
                     @update:user-name="registerUserName = $event"
                     @update:password="registerPass = $event"
                     @onSubmit="onRegisterUser"
@@ -33,7 +33,7 @@
                 <login-container
                     :content-width="65"
                     :image-width="35"
-                    :image-url="'src/assets/images/loginPageBg2.png'"
+                    :image-url="loginPageBg2"
                     @update:user-name="loginUserName = $event"
                     @update:password="loginPass = $event"
                     @on-submit="onLoginUser"
@@ -54,6 +54,8 @@ import { useUserDetailsStore } from '@/stores/userDetails'
 import { useRouter } from 'vue-router'
 import { onActivated } from 'vue'
 import { useToast } from 'vue-toastification'
+import loginPageBg from '../assets/images/loginPageBg.png'
+import loginPageBg2 from '../assets/images/loginPageBg2.png'
 
 const router = useRouter()
 const userDetails = useUserDetailsStore()
