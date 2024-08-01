@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 export function useMap(mapContainer, onMapLoad, ctx){
     const mapVisibility = ref('hidden');
-    mapboxgl.accessToken = 'pk.eyJ1IjoiaGFyaHMtamFpbjE3IiwiYSI6ImNsd3E4aXpmeDJ4ajgyam1wdjI3NjZmc2UifQ.qLJwByfgxKWXEeLN7DSWhg'
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
     const createMap = () => {
         const deck = false;
