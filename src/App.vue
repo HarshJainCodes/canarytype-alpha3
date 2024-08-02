@@ -42,11 +42,17 @@ onActivated(() => {
     setLoginStatusIfComingFromAnotherRoute()
 })
 
-const setLoginStatusIfComingFromAnotherRoute = () => {
-    const userName = localStorage.getItem('canaryalpha3Username')
-    if (userName) {
-        userDetails.userName = userName
-        userDetails.setIsLoggedIn(true)
+const setLoginStatusIfComingFromAnotherRoute = async () => {
+    const call = await fetch('https://canarytype-alpha3.azurewebsites.net/api/TypingArena/CheckLogin', {
+        credentials: 'include'
+    })
+
+    if (call.status === 401) {
+        userDetails.userName = '';
+        userDetails.setIsLoggedIn(false);
+    } else if (call.status === 200) {
+        userDetails.userName = localStorage.getItem('canaryalpha3Username');
+        userDetails.setIsLoggedIn(true);
     }
 }
 </script>

@@ -98,7 +98,6 @@ const onRegisterUser = async () => {
 
     if (res.status === 200) {
         localStorage.setItem('canaryalpha3Username', registerUserName.value)
-        localStorage.setItem('canaryalpha3Token', response.token)
         userDetails.setIsLoggedIn(true)
         userDetails.userName = registerUserName.value
         router.push('TypingArena')
@@ -122,7 +121,6 @@ const onLoginUser = async () => {
 
     if (res.status === 200) {
         localStorage.setItem('canaryalpha3Username', loginUserName.value)
-        localStorage.setItem('canaryalpha3Token', response.token)
 
         userDetails.setIsLoggedIn(true)
         userDetails.userName = loginUserName.value

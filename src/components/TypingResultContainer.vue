@@ -78,7 +78,6 @@ const resultSentToDB = ref(false);
 onActivated(() => {
     if (!resultSentToDB.value && userDetails.isLoggedIn){
         sendDataToBackend();
-        resultSentToDB.value = true;
     }
 })
 
@@ -107,6 +106,10 @@ const sendDataToBackend = async () => {
         toast('Result Saved Successfully', {
             type: 'success'
         })
+        resultSentToDB.value = true;
+    } else if (call.status === 401) {
+        userDetails.isLoggedIn = false;
+        userDetails.userName = ''
     }
 }
 </script>

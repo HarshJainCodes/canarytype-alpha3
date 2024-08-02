@@ -10,7 +10,7 @@
                                 :title="item.name"
                                 :prepend-icon="item.icon"
                                 :disabled="item.disabled"
-                                :to="item.name"
+                                @click="item.clicked"
                             >
                             </v-list-item>
                         </div>
@@ -25,35 +25,56 @@
 <script setup>
 import { computed } from 'vue'
 import { useUserDetailsStore } from '../stores/userDetails.js'
+import { useRouter } from 'vue-router';
 
 const userDetails = useUserDetailsStore()
+const router = useRouter()
 
 const navBarItems = computed(() => {
     return [
         {
             name: userDetails.isLoggedIn ? 'Profile' : 'Login',
             icon: 'mdi-account-circle-outline',
-            disabled: false
+            disabled: false,
+            clicked: () => {
+                if (userDetails.isLoggedIn) {
+                    router.push(`/u/${userDetails.userName}`);
+                } else {
+                    router.replace('/Login')
+                }
+            }
         },
         {
             name: 'TypingArena',
             icon: 'mdi-keyboard',
-            disabled: false
+            disabled: false,
+            clicked: () => {
+                router.replace('/TypingArena')
+            }
         },
         {
             name: 'Analysis',
             icon: 'mdi-poll',
-            disabled: !userDetails.isLoggedIn
+            disabled: !userDetails.isLoggedIn,
+            clicked: () => {
+                router.replace('/Analysis')
+            }
         },
         {
             name: 'Leaderboard',
             icon: 'mdi-trophy',
-            disabled: !userDetails.isLoggedIn
+            disabled: !userDetails.isLoggedIn,
+            clicked: () => {
+                router.replace('/Leaderboard')
+            }
         },
         {
             name: 'MapVisualization',
             icon: 'mdi-map-check',
-            disabled: false
+            disabled: false,
+            clicked: () => {
+                router.replace('/MapVisualization')
+            }
         }
     ]
 })
