@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import AnalysisView from '../views/AnalysisView.vue'
 import MapView from '../views/MapView.vue'
 import UserProfile from '../views/ProfileView.vue'
+import SignalRView from '@/views/SignalRView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,11 @@ const router = createRouter({
             name: 'MapVisualization',
             path: '/MapVisualization',
             component: MapView,
+        },
+        {
+            name: 'TestingSignalR',
+            path: '/TestingSignalR',
+            component: SignalRView
         }
     ]
 })

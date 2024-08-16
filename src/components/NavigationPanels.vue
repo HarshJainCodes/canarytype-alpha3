@@ -75,6 +75,14 @@ const navBarItems = computed(() => {
             clicked: () => {
                 router.replace('/MapVisualization')
             }
+        },
+        {
+            name: 'TestingSignalR',
+            icon: 'mdi-message-outline',
+            disabled: false,
+            clicked: () => {
+                router.replace('/TestingSignalR')
+            }
         }
     ]
 })
