@@ -3,7 +3,7 @@
         <div class="d-flex w-100 text-h6 justify-center">
             Welcome {{ userName}}
         </div>
-        <div class="d-flex w-100 h-100 py-5">
+        <div class="d-flex w-100 h-100 py-5 overflow-hidden">
             <div class="d-flex flex-column w-25 h-100">
                 <v-list>
                     <v-list-group v-for="(date, index) in userSubmissionsByDate" :key="index">
@@ -16,7 +16,7 @@
                             <v-card class="d-flex w-100 flex-column elevation-10">
                                 <v-card-text>
                                     <v-timeline side="end" class="w-100">
-                                        <v-timeline-item v-for="(submission, index) in date" :key="index" dot-color="pink" class="w-100">
+                                        <v-timeline-item v-for="(submission, index) in date" :key="index" dot-color="pink" class="w-100" elevation="10">
                                             <v-btn class="w-100" @click="setCurrSelectedSubmission(submission)">
                                                 <div class="text-h6">
                                                     {{ submission.submissionDate.split("T")[1].split(".")[0]}}
@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import { computed, defineComponent, nextTick, onActivated, ref, watch } from 'vue'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { computed, defineComponent, onActivated, ref, watch } from 'vue'
+import { useRoute } from 'vue-router';
 import TypingResult from '@/components/TypingResult.vue';
 
 export default defineComponent({
