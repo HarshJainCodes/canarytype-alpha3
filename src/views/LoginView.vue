@@ -75,6 +75,7 @@ onMounted(() => {
 
 onActivated(() => {
     console.log('on activating login view')
+    console.log(userDetails.isLoggedIn);
     if (userDetails.isLoggedIn) {
         router.push('/TypingArena')
     }
