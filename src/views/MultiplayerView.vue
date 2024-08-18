@@ -80,8 +80,8 @@ export default defineComponent({
 
             try {
                 conn.value = new HubConnectionBuilder()
-                    // .withUrl("https://canarytype-alpha3.azurewebsites.net/Chat")
-                    .withUrl("https://localhost:7161/Chat")
+                    .withUrl("https://canarytype-alpha3.azurewebsites.net/Chat")
+                    // .withUrl("https://localhost:7161/Chat")
                     .configureLogging(LogLevel.Information)
                     .withAutomaticReconnect()
                     .build();
