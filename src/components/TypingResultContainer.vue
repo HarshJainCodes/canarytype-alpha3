@@ -108,7 +108,7 @@ const sendDataToBackend = async () => {
         })
         resultSentToDB.value = true;
     } else if (call.status === 401) {
-        userDetails.isLoggedIn = false;
+        userDetails.setIsLoggedIn(false);
         userDetails.userName = ''
     }
 }
