@@ -75,45 +75,12 @@ export default defineComponent({
 
         const isSearchingForOpponent = ref(false);
 
-        const joinChatRoom = async () => {
-            console.log('joining chat room');
-
-            try {
-                conn.value = new HubConnectionBuilder()
-                    .withUrl("https://canarytype-alpha3.azurewebsites.net/Chat")
-                    // .withUrl("https://localhost:7161/Chat")
-                    .configureLogging(LogLevel.Information)
-                    .withAutomaticReconnect()
-                    .build();
-
-                conn.value.on("OnConnected", (msg) => {
-                    console.log(msg);
-                })
-
-                conn.value.on("MatchStarted", (groupName, player1, player2) => {
-                    console.log("the group formed is: ", groupName);
-                    console.log("the match will be between player1: ", player1);
-                    console.log("the match will be between player2: ", player2);
-                    roomId.value = groupName;
-                })
-
-                conn.value.on("OnDisconnect", (msg) => {
-                    console.log(msg);
-                })
-
-                await conn.value.start();
-                await conn.value.invoke("JoinChat", {username: userDetails.userName, password: 'something'});
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
         const onSearchButtonClicked = async () => {
             // try for a connection
             try {
                 conn.value = new HubConnectionBuilder()
-                    // .withUrl("https://canarytype-alpha3.azurewebsites.net/Chat")
-                    .withUrl("https://localhost:7161/Chat")
+                    .withUrl("https://canarytype-alpha3.azurewebsites.net/Chat")
+                    // .withUrl("https://localhost:7161/Chat")
                     .configureLogging(LogLevel.Information)
                     .withAutomaticReconnect()
                     .build();
@@ -169,7 +136,6 @@ export default defineComponent({
             isSearchingForOpponent,
             currComponent,
             roomId,
-            joinChatRoom,
             sendFinalSpeed,
             onSearchButtonClicked,
             onCancelButtonClicked,
