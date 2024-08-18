@@ -79,7 +79,7 @@ const navBarItems = computed(() => {
         {
             name: 'TestingSignalR',
             icon: 'mdi-message-outline',
-            disabled: !userDetails.isLoggedIn,
+            disabled: false,
             clicked: () => {
                 router.replace('/TestingSignalR')
             }
