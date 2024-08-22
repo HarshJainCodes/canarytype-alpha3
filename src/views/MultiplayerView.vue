@@ -37,13 +37,17 @@
                         {{ userDetails.userName }} VS {{ opponent }}
                     </div>
 
-                    <component 
+                    <component
                         class="w-100 h-100"
                         :is="currComponent"
+                        :mode="'multiplayer'"
                         v-model:typingFinished="typingFinished"
                         v-model:lineChartData="lineChartData"
                         v-model:rawLineChartData="rawLineChartData"
+                        :opp-line-chart-data="oppLineChartData"
+                        :opp-raw-line-chart-data="oppRawLineChartData"
                         v-model:typingSpeed="typingSpeed"
+                        @navigate-to-pairing="navigateToPairing"
                     />
                 </div>
             </div>
@@ -54,12 +58,13 @@
 <script lang="ts">
 import { useUserDetailsStore } from '@/stores/userDetails';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import TypingArea from '@/components/TypingArea.vue';
 import TypingResultContainer from '@/components/TypingResultContainer.vue';
+import MultiplayerResultDisplay from '@/components/Multiplayer/MultiplayerResultDisplay.vue';
 
 export default defineComponent({
-    components: { TypingArea },
+    components: { TypingArea, TypingResultContainer, MultiplayerResultDisplay },
     setup() {
         const userDetails = useUserDetailsStore();
 
@@ -71,6 +76,8 @@ export default defineComponent({
         const typingFinished = ref(false)
         const lineChartData = ref([])
         const rawLineChartData = ref([])
+        const oppLineChartData = ref([])
+        const oppRawLineChartData = ref([])
         const typingSpeed = ref(0)
 
         const isSearchingForOpponent = ref(false);
@@ -97,29 +104,50 @@ export default defineComponent({
                     } else {
                         opponent.value = player1.userName;
                     }
+                })
 
-                    console.log(player1)
-                    console.log(player2)
+                conn.value.on("MatchResult", (matchInfo) => {
+                    console.log(matchInfo);
+                    if (matchInfo.player1Name === userDetails.userName) {
+                        oppLineChartData.value = matchInfo.player2Submissions
+                        oppRawLineChartData.value = matchInfo.player2SubmissionsRaw
+                    } else {
+                        oppLineChartData.value = matchInfo.player1Submissions
+                        oppRawLineChartData.value = matchInfo.player1SubmissionsRaw
+                    }
                 })
 
                 await conn.value.start();
                 await conn.value.invoke("JoinChat", {username: userDetails.userName, password: 'something'})
+                userDetails.isPlayingMultiplayer = true;
             } catch (e) {
                 console.log(e);
             }
         }
 
         const currComponent = computed(() => {
-            return typingFinished.value ? TypingResultContainer : TypingArea
+            return typingFinished.value ? MultiplayerResultDisplay : TypingArea
+        })
+
+        const navigateToPairing = () => {
+            roomId.value = '';
+            isSearchingForOpponent.value = false;
+            typingFinished.value = false;
+            userDetails.isPlayingMultiplayer = false
+        }
+
+        watch(typingFinished, async (newVal) => {
+            if (newVal) {
+                if (lineChartData.value.length) {
+                    await conn.value.invoke("ClientSubmitResult", roomId.value, userDetails.userName, lineChartData.value, rawLineChartData.value);
+                }
+            }
         })
 
         const onCancelButtonClicked = () => {
             conn.value.stop();
             isSearchingForOpponent.value = false
-        }
-
-        const sendFinalSpeed = async (UserName, speed) => {
-            conn.value.invoke("SendFinalSpeed", UserName, speed)
+            userDetails.isPlayingMultiplayer = false
         }
 
         onMounted(() => {
@@ -131,14 +159,16 @@ export default defineComponent({
             typingFinished,
             lineChartData,
             rawLineChartData,
+            oppLineChartData,
+            oppRawLineChartData,
             typingSpeed,
             opponent,
             isSearchingForOpponent,
             currComponent,
             roomId,
-            sendFinalSpeed,
             onSearchButtonClicked,
             onCancelButtonClicked,
+            navigateToPairing,
         }
     },
 })
