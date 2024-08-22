@@ -35,7 +35,7 @@ const navBarItems = computed(() => {
         {
             name: userDetails.isLoggedIn ? 'Profile' : 'Login',
             icon: 'mdi-account-circle-outline',
-            disabled: false,
+            disabled: userDetails.isPlayingMultiplayer,
             clicked: () => {
                 if (userDetails.isLoggedIn) {
                     router.push(`/u/${userDetails.userName}`);
@@ -47,7 +47,7 @@ const navBarItems = computed(() => {
         {
             name: 'TypingArena',
             icon: 'mdi-keyboard',
-            disabled: false,
+            disabled: userDetails.isPlayingMultiplayer,
             clicked: () => {
                 router.replace('/TypingArena')
             }
@@ -55,7 +55,7 @@ const navBarItems = computed(() => {
         {
             name: 'Analysis',
             icon: 'mdi-poll',
-            disabled: !userDetails.isLoggedIn,
+            disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
             clicked: () => {
                 router.replace('/Analysis')
             }
@@ -63,7 +63,7 @@ const navBarItems = computed(() => {
         {
             name: 'Leaderboard',
             icon: 'mdi-trophy',
-            disabled: !userDetails.isLoggedIn,
+            disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
             clicked: () => {
                 router.replace('/Leaderboard')
             }
@@ -71,7 +71,7 @@ const navBarItems = computed(() => {
         {
             name: 'MapVisualization',
             icon: 'mdi-map-check',
-            disabled: false,
+            disabled: userDetails.isPlayingMultiplayer,
             clicked: () => {
                 router.replace('/MapVisualization')
             }

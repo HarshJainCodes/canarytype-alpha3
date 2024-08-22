@@ -1,31 +1,38 @@
 <template>
-    <v-card class="w-100 h-100 d-flex flex-column pa-5">
-        <v-spacer></v-spacer>
-        <v-card-title>
-            <div class="pt-10">{{ time }}</div>
-        </v-card-title>
-
-        <v-skeleton-loader type="paragraph" class="h-25" v-if="stringToType === ''">
-        </v-skeleton-loader>
-        <v-card-text class="d-flex flex-column">
-            <div class="text-to-type text-h4">
-                <div class="text-to-type-1 text-disabled">
-                    {{ stringToType }}
-                </div>
-
-                <div class="resultDisplay"></div>
-
-                <textarea
-                    style="font-family: myRobotoFont; resize: none"
-                    class="text-h4 text-transparent"
-                    name="typingArea"
-                    spellcheck="false"
-                    v-on:keydown="startTimer"
-                ></textarea>
+    <div class="w-100 h-100 position-relative">
+        <v-overlay width="100%" height="100%" :model-value="props.mode === 'multiplayer' && multiplayerCountdownTime > 0" contained persistent>
+            <div class="text-h5 d-flex justify-center align-center h-50">
+                Match Starts in {{ multiplayerCountdownTime }}
             </div>
-        </v-card-text>
-        <v-spacer></v-spacer>
-    </v-card>
+        </v-overlay>
+        <v-card class="w-100 h-100 d-flex flex-column pa-5">
+            <v-spacer></v-spacer>
+            <v-card-title>
+                <div class="pt-10">{{ time }}</div>
+            </v-card-title>
+    
+            <v-skeleton-loader type="paragraph" class="h-25" v-if="stringToType === ''">
+            </v-skeleton-loader>
+            <v-card-text class="d-flex flex-column">
+                <div class="text-to-type text-h4">
+                    <div class="text-to-type-1 text-disabled">
+                        {{ stringToType }}
+                    </div>
+    
+                    <div class="resultDisplay"></div>
+    
+                    <textarea
+                        style="font-family: myRobotoFont; resize: none"
+                        class="text-h4 text-transparent"
+                        name="typingArea"
+                        spellcheck="false"
+                        v-on:keydown="startTimer"
+                    ></textarea>
+                </div>
+            </v-card-text>
+            <v-spacer></v-spacer>
+        </v-card>
+    </div>
 </template>
 
 <script setup>
@@ -38,6 +45,13 @@ const INITIAL_TIME = 20
 const typingStarted = ref(false)
 const time = ref(INITIAL_TIME)
 let timer
+
+const multiplayerCountdownTime = ref(5)
+let multiplayerCountdownTimer
+
+const props = defineProps({
+    mode: String,
+});
 
 const emit = defineEmits([
     'update:typingFinished',
@@ -61,6 +75,15 @@ onActivated(() => {
 })
 
 onMounted(() => {
+    if (props.mode === 'multiplayer') {
+        multiplayerCountdownTimer = setInterval(() => {
+            multiplayerCountdownTime.value--;
+            if (multiplayerCountdownTime.value <= 0) {
+                clearInterval(multiplayerCountdownTimer)
+                startTimer()
+            }
+        }, 1000);
+    }
     fetchWordsFromBackend()
 })
 
@@ -105,7 +128,9 @@ const startTimer = (event) => {
         }, 1000)
     }
     addSpanAroundText()
-    addWordsToTimestamp(event.key)
+    if (event) {
+        addWordsToTimestamp(event.key)
+    }
 }
 
 // todo optimise this text

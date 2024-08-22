@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export const useUserDetailsStore = defineStore('userDetails', () => {
@@ -7,6 +7,7 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     const userName = ref('')
 
     const isLoggedIn = ref(false);
+    const isPlayingMultiplayer = ref(false);
 
     function setIsLoggedIn(val) {
         isLoggedIn.value = val
@@ -33,5 +34,5 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
         }
     })
 
-    return { isLoggedIn, userName, setIsLoggedIn, preventUnauthorizedRouteNavigation }
+    return { isLoggedIn, userName, isPlayingMultiplayer, setIsLoggedIn, preventUnauthorizedRouteNavigation }
 })
