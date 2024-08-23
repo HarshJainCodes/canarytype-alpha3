@@ -40,8 +40,8 @@ const router = createRouter({
             component: MapView,
         },
         {
-            name: 'TestingSignalR',
-            path: '/TestingSignalR',
+            name: 'PlayOnline',
+            path: '/PlayOnline',
             component: MultiplayerView
         }
     ]

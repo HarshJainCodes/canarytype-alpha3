@@ -41,6 +41,7 @@
                         class="w-100 h-100"
                         :is="currComponent"
                         :mode="'multiplayer'"
+                        :opp-name="opponent"
                         v-model:typingFinished="typingFinished"
                         v-model:lineChartData="lineChartData"
                         v-model:rawLineChartData="rawLineChartData"
@@ -134,6 +135,10 @@ export default defineComponent({
             isSearchingForOpponent.value = false;
             typingFinished.value = false;
             userDetails.isPlayingMultiplayer = false
+            lineChartData.value = []
+            rawLineChartData.value = []
+            oppLineChartData.value = []
+            oppRawLineChartData.value = []
         }
 
         watch(typingFinished, async (newVal) => {

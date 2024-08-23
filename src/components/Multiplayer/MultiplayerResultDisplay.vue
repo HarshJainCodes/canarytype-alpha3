@@ -9,25 +9,42 @@
     
             <div class="w-100 d-flex">
                 <!-- Yours -->
-                <v-card class="w-100 my-5 mr-5 py-5" elevation="3">
-                    <typing-result
-                        :line-chart-data="lineChartData"
-                        :raw-line-chart-data="rawLineChartData"
-                    ></typing-result>
-                </v-card>
-                <!-- Opponent -->
-                <v-card class="w-100 my-5 py-5 ml-5" elevation="3">
-                    <div v-if="oppLineChartData.length === 0">
-                        <div class="d-flex w-100 h-100 justify-center align-center">
-                            <v-progress-circular indeterminate></v-progress-circular>
-                        </div>
+                 <div class="d-flex flex-column w-100 h-100">
+                     <div class="w-100 d-flex text-h4 justify-center">
+                        {{ userDetails.userName }}
+                     </div>
+                    <v-card class="w-100 my-5 py-5" elevation="3">
+                        <typing-result
+                            :line-chart-data="lineChartData"
+                            :raw-line-chart-data="rawLineChartData"
+                        ></typing-result>
+                    </v-card>
+                    <div class="w-100 d-flex justify-center text-h5">
+                        Typing speed: {{ Math.round(lineChartData[lineChartData.length - 1]) }} WPM!
                     </div>
-                    <typing-result
-                        v-else
-                        :line-chart-data="oppLineChartData"
-                        :raw-line-chart-data="oppRawLineChartData"
-                    ></typing-result>
-                </v-card>
+                 </div>
+                <!-- Opponent -->
+                 <div class="d-flex flex-column w-100 h-100">
+                    <div class="w-100 text-h4 d-flex justify-center">
+                        {{ oppName }}
+                    </div>
+                    <v-card class="w-100 my-5 py-5" elevation="3">
+                        <div v-if="oppLineChartData.length === 0">
+                            <div class="d-flex w-100 h-100 justify-center align-center">
+                                <v-progress-circular indeterminate></v-progress-circular>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <typing-result
+                                :line-chart-data="oppLineChartData"
+                                :raw-line-chart-data="oppRawLineChartData"
+                            ></typing-result>
+                        </div>
+                    </v-card>
+                    <div class="w-100 d-flex text-h5 justify-center">
+                        Typing speed: {{ Math.round(oppLineChartData[oppLineChartData.length - 1]) }} WPM!
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -36,10 +53,15 @@
 <script>
 import { defineComponent } from 'vue'
 import TypingResult from '../TypingResult.vue';
+import { useUserDetailsStore } from '@/stores/userDetails';
 
 export default defineComponent({
     components: { TypingResult },
     props: {
+        oppName: {
+            type: String,
+            required: true,
+        },
         lineChartData: {
             type: Array,
             required: true,
@@ -59,11 +81,14 @@ export default defineComponent({
     },
     emits: ['navigate-to-pairing'],
     setup(props, { emit }) {
+        const userDetails = useUserDetailsStore();
+
         const returnToTypingArea = () => {
             emit('navigate-to-pairing')
         }
 
         return {
+            userDetails,
             returnToTypingArea
         }
     },

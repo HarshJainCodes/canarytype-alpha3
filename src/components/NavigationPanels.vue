@@ -52,36 +52,36 @@ const navBarItems = computed(() => {
                 router.replace('/TypingArena')
             }
         },
+        // {
+        //     name: 'Analysis',
+        //     icon: 'mdi-poll',
+        //     disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
+        //     clicked: () => {
+        //         router.replace('/Analysis')
+        //     }
+        // },
+        // {
+        //     name: 'Leaderboard',
+        //     icon: 'mdi-trophy',
+        //     disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
+        //     clicked: () => {
+        //         router.replace('/Leaderboard')
+        //     }
+        // },
+        // {
+        //     name: 'MapVisualization',
+        //     icon: 'mdi-map-check',
+        //     disabled: userDetails.isPlayingMultiplayer,
+        //     clicked: () => {
+        //         router.replace('/MapVisualization')
+        //     }
+        // },
         {
-            name: 'Analysis',
-            icon: 'mdi-poll',
-            disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
-            clicked: () => {
-                router.replace('/Analysis')
-            }
-        },
-        {
-            name: 'Leaderboard',
-            icon: 'mdi-trophy',
-            disabled: !userDetails.isLoggedIn || userDetails.isPlayingMultiplayer,
-            clicked: () => {
-                router.replace('/Leaderboard')
-            }
-        },
-        {
-            name: 'MapVisualization',
-            icon: 'mdi-map-check',
-            disabled: userDetails.isPlayingMultiplayer,
-            clicked: () => {
-                router.replace('/MapVisualization')
-            }
-        },
-        {
-            name: 'TestingSignalR',
+            name: 'PlayOnline',
             icon: 'mdi-message-outline',
             disabled: !userDetails.isLoggedIn,
             clicked: () => {
-                router.replace('/TestingSignalR')
+                router.replace('/PlayOnline')
             }
         }
     ]
