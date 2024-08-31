@@ -79,6 +79,7 @@ onMounted(() => {
         multiplayerCountdownTimer = setInterval(() => {
             multiplayerCountdownTime.value--;
             if (multiplayerCountdownTime.value <= 0) {
+                document.querySelector('textarea').focus();
                 clearInterval(multiplayerCountdownTimer)
                 startTimer()
             }

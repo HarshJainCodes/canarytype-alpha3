@@ -305,6 +305,7 @@ export default defineComponent({
             isHostingPrivateRoom.value = false;
             isJoiningPrivateRoom.value = false;
             privateRoomText.value = '';
+            privateRoomIdToShare.value = '';
         }
 
         watch(typingFinished, async (newVal) => {
