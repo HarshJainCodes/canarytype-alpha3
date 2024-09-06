@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex w-100 h-100">
         <div class="d-flex w-100 h-100 justify-center mx-5 flex-column">
-            <div>
+            <div v-if="!noGoBack">
                 <v-btn :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea">
                         Go Back
                 </v-btn>
@@ -58,6 +58,10 @@ import { useUserDetailsStore } from '@/stores/userDetails';
 export default defineComponent({
     components: { TypingResult },
     props: {
+        noGoBack: {
+            type: Boolean,
+            default: () => false,
+        },
         oppName: {
             type: String,
             required: true,
