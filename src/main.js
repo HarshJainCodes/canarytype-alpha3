@@ -13,6 +13,9 @@ import Toast from 'vue-toastification'
 // Import the CSS or use your own!
 import 'vue-toastification/dist/index.css'
 
+// tanstack
+import { VueQueryPlugin } from '@tanstack/vue-query'
+
 import App from './App.vue'
 import router from './router'
 
@@ -32,5 +35,6 @@ app.use(createPinia())
 app.use(router)
 app.use(vuetify)
 app.use(Toast, toastOptions)
+app.use(VueQueryPlugin)
 
 app.mount('#app')
