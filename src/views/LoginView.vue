@@ -4,7 +4,7 @@
             <v-tabs align-tabs="center" v-model:model-value="tabIndex">
                 <v-tab> Register </v-tab>
 
-                <v-tab> Login </v-tab>
+                <v-tab data-qa-id="login-tab"> Login </v-tab>
             </v-tabs>
         </div>
         <v-window v-model="tabIndex">

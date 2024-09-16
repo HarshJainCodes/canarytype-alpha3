@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex w-100 h-100">
+    <div class="d-flex w-100 h-100" data-qa-id="typing-result-container">
         <div class="d-flex w-100 h-100 mx-5 flex-column justify-center">
             <div>
                 <v-btn :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea(false)">
@@ -54,6 +54,7 @@
                 variant="outlined"
                 color="red"
                 to="/Login"
+                data-qa-id="not-login-banner"
             >
                 <div class="text-h6">Please Login to save your result</div>
             </v-card>

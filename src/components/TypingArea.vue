@@ -15,13 +15,14 @@
             </v-skeleton-loader>
             <v-card-text class="d-flex flex-column">
                 <div class="text-to-type text-h4">
-                    <div class="text-to-type-1 text-disabled">
+                    <div class="text-to-type-1 text-disabled" data-qa-id="stringToType">
                         {{ stringToType }}
                     </div>
     
                     <div class="resultDisplay"></div>
     
                     <textarea
+                        data-qa-id="typing-textarea"
                         style="font-family: myRobotoFont; resize: none"
                         class="text-h4 text-transparent"
                         name="typingArea"

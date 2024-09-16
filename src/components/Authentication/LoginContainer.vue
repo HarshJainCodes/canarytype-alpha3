@@ -7,6 +7,7 @@
 
       <div class="h-100">
         <v-text-field
+          data-qa-id="enter-user-name"
           class="mr-5 mt-10"
           max-width="50%"
           label="User Name"
@@ -16,6 +17,7 @@
         >
         </v-text-field>
         <v-text-field
+          data-qa-id="enter-password"
           max-width="50%"
           label="Password"
           variant="solo"
@@ -26,6 +28,7 @@
         </v-text-field>
 
         <v-text-field
+          data-qa-id="re-enter-password"
           max-width="50%"
           label="Confirm Password"
           variant="solo"
@@ -40,7 +43,7 @@
 
         <v-checkbox label="Show Password" v-model="showPassword"></v-checkbox>
 
-        <v-btn :disabled="isActionBtnDisabled" @click="emit('onSubmit')">
+        <v-btn data-qa-id="action-button" :disabled="isActionBtnDisabled" @click="emit('onSubmit')">
           <slot name="actionBtn"> </slot>
         </v-btn>
       </div>
