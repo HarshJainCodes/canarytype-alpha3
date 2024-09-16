@@ -39,6 +39,8 @@
 import { onDeactivated } from 'vue'
 import { onActivated } from 'vue'
 import { ref, onMounted, defineEmits } from 'vue'
+import { useRandomWords } from '@/Queries/ArenaQueries';
+import { useQueryClient } from '@tanstack/vue-query';
 
 const INITIAL_TIME = 20
 
@@ -60,16 +62,19 @@ const emit = defineEmits([
     'update:typingSpeed'
 ])
 
-const stringToType = ref('')
-
 const wordsTypedPerSecond = new Array(time.value).fill('')
 const rawWordsTypedPerSecond = new Array(time.value).fill('')
 const typingSpeedPerSecond = new Array(time.value).fill(0)
 const rawTypingSpeedPerSecond = new Array(time.value).fill(0)
 
+const randomWords = useRandomWords();
+const queryClient = useQueryClient();
+
+const stringToType = randomWords.data
+
 onActivated(() => {
     if (typingStarted.value === true) {
-        fetchWordsFromBackend()
+        queryClient.invalidateQueries({ queryKey: ['randomWords']})
         resetParams()
     }
 })
@@ -85,23 +90,11 @@ onMounted(() => {
             }
         }, 1000);
     }
-    fetchWordsFromBackend()
 })
 
 onDeactivated(() => {
     clearInterval(timer)
 })
-
-const fetchWordsFromBackend = async () => {
-    const res = await fetch(
-        'https://canarytype-alpha3.azurewebsites.net/api/TypingArena/RandomWords'
-    )
-
-    if (res.status === 200) {
-        const words = await res.json()
-        stringToType.value = words.join(' ')
-    }
-}
 
 const resetParams = () => {
     stringToType.value = ''

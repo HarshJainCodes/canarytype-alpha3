@@ -161,11 +161,6 @@ export default defineComponent({
             fetchUserOnlineSubmissionFromBackend()
         })
 
-        // watch(userName, () => {
-        //     fetchUserSubmissionFromBackend()
-        //     fetchUserOnlineSubmissionFromBackend()
-        // })
-
         return { 
             userName,
             userSubmissions,

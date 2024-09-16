@@ -16,6 +16,7 @@
     "dependencies": {
         "@deck.gl/mapbox": "^9.0.23",
         "@microsoft/signalr": "^8.0.7",
+        "@tanstack/vue-query": "^5.56.2",
         "@typescript-eslint/eslint-plugin": "^8.3.0",
         "@typescript-eslint/parser": "^8.3.0",
         "chart.js": "^4.4.3",
