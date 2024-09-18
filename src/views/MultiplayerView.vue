@@ -1,6 +1,6 @@
 <template>
     <div class="w-100 h-100 d-flex pa-5 justify-center">
-        <div class="d-flex w-100 h-100">
+        <div v-if="shouldLoad" class="d-flex w-100 h-100">
             <div v-if="!roomId" class="d-flex w-100 h-100">
                 <div class="d-flex w-25 h-100 ">
                     <div class="d-flex w-100 h-100 flex-column align-center justify-center">
@@ -128,6 +128,8 @@ export default defineComponent({
 
         const isJoiningPrivateRoom = ref(false);
         const privateRoomText = ref('');
+
+        const shouldLoad = ref(false);
 
         const onClickJoinWithCode = async () => {
             // first need to check if a room exists with the given code
@@ -322,8 +324,10 @@ export default defineComponent({
             userDetails.isPlayingMultiplayer = false
         }
 
-        onMounted(() => {
-            userDetails.preventUnauthorizedRouteNavigation()
+        onMounted(async () => {
+            shouldLoad.value = false;
+            await userDetails.preventUnauthorizedRouteNavigation()
+            shouldLoad.value = true;
         })
 
         return {
@@ -342,6 +346,7 @@ export default defineComponent({
             isJoiningPrivateRoom,
             isHostingPrivateRoom,
             privateRoomIdToShare,
+            shouldLoad,
             onClickJoinWithCode,
             onClickJoinPrivateRoom,
             onClickPrivateRoom,
