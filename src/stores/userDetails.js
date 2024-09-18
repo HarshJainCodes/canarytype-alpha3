@@ -13,9 +13,15 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
         isLoggedIn.value = val
     }
 
-    function preventUnauthorizedRouteNavigation() {
-        if (!isLoggedIn.value) {
-            router.push('/Login')
+    async function preventUnauthorizedRouteNavigation() {
+        const loginCheckCall = await fetch('https://canarytype-alpha3.azurewebsites.net/api/TypingArena/CheckLogin', {
+            credentials: 'include'
+        })
+
+        if (loginCheckCall.status === 401) {
+            if (!isLoggedIn.value) {
+                router.push('/Login')
+            }
         }
     }
 
