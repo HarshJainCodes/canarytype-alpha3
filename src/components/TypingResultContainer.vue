@@ -2,7 +2,7 @@
     <div class="d-flex w-100 h-100" data-qa-id="typing-result-container">
         <div class="d-flex w-100 h-100 mx-5 flex-column justify-center">
             <div>
-                <v-btn :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea(false)">
+                <v-btn data-qa-id="type-again-button" :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea(false)">
                     Type Again
                 </v-btn>
             </div>
