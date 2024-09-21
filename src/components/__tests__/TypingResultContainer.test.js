@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import TypingResultContainer from "../TypingResultContainer.vue";
@@ -15,9 +15,11 @@ const vuetify = createVuetify({
 })
 
 vi.mock("@/stores/userDetails")
+vi.mock('vue-toastification');
 
 describe('TypingResultContainer.vue', () => {
     let userDetailsStore;
+    let toastMock;
 
     beforeEach(() => {
         userDetailsStore = {
@@ -25,7 +27,9 @@ describe('TypingResultContainer.vue', () => {
             userName: 'testUser',
             setIsLoggedIn: vi.fn(),
         }
+        toastMock = vi.fn();
         useUserDetailsStore.mockReturnValue(userDetailsStore)
+        useToast.mockReturnValue(toastMock);
         setActivePinia(createPinia())
     })
 
@@ -89,5 +93,37 @@ describe('TypingResultContainer.vue', () => {
         await wrapper.find('[data-qa-id="type-again-button"]').trigger('click')
         expect(wrapper.emitted('update:typingFinished')).toBeTruthy();
         expect(wrapper.emitted('update:typingFinished')[0]).toEqual([false])
+    })
+
+    it('calls the api and sends data to backend when sendDataToBackend is triggered', async () => {
+        global.fetch = vi.fn(() => 
+            Promise.resolve({
+                status: 200,
+            })
+        )
+
+        const wrapper = mount(TypingResultContainer, {
+            props: {
+              lineChartData: [1, 2, 3],
+              rawLineChartData: [1, 2, 3],
+              typingSpeed: 100,
+            },
+            global: {
+                plugins: [vuetify]
+            }
+        });
+
+        await wrapper.vm.sendDataToBackend()
+        // await flushPromises()
+
+        expect(global.fetch).toHaveBeenCalledWith('https://canarytype-alpha3.azurewebsites.net/api/TypingArena/Submit', 
+            expect.objectContaining({
+                method: 'POST',
+                body: expect.any(String)
+            })
+        )
+
+        expect(wrapper.vm.resultSentToDB).toBe(true);
+        expect(toastMock).toHaveBeenCalledWith('Result Saved Successfully', { type: 'success' });
     })
 })
