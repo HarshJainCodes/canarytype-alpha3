@@ -124,6 +124,6 @@ describe('TypingResultContainer.vue', () => {
         )
 
         expect(wrapper.vm.resultSentToDB).toBe(true);
-        expect(toastMock).toHaveBeenCalledWith('Result Saved Successfully fake', { type: 'success' });
+        expect(toastMock).toHaveBeenCalledWith('Result Saved Successfully', { type: 'success' });
     })
 })
