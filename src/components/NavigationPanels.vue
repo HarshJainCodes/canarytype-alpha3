@@ -25,7 +25,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useUserDetailsStore } from '../stores/userDetails.js'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const userDetails = useUserDetailsStore()
 const router = useRouter()
@@ -38,7 +38,7 @@ const navBarItems = computed(() => {
             disabled: userDetails.isPlayingMultiplayer,
             clicked: () => {
                 if (userDetails.isLoggedIn) {
-                    router.push(`/u/${userDetails.userName}`);
+                    router.push(`/u/${userDetails.userName}`)
                 } else {
                     router.replace('/Login')
                 }
