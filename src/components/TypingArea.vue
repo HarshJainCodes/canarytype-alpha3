@@ -1,6 +1,7 @@
 <template>
     <div class="w-100 h-100 position-relative">
         <v-overlay
+            id="overlay-before-match-start"
             width="100%"
             height="100%"
             :model-value="props.mode === 'multiplayer' && multiplayerCountdownTime > 0"
@@ -17,7 +18,7 @@
                 <div class="pt-10">{{ time }}</div>
             </v-card-title>
 
-            <v-skeleton-loader type="paragraph" class="h-25" v-if="stringToType === undefined">
+            <v-skeleton-loader data-qa-id="typingarea-skeleton-loader" type="paragraph" class="h-25" v-if="stringToType === undefined">
             </v-skeleton-loader>
             <v-card-text class="d-flex flex-column">
                 <div class="text-to-type text-h4">
