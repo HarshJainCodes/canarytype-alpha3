@@ -125,5 +125,18 @@ describe('TypingResultContainer.vue', () => {
 
         expect(wrapper.vm.resultSentToDB).toBe(true);
         expect(toastMock).toHaveBeenCalledWith('Result Saved Successfully', { type: 'success' });
+
+        global.fetch = vi.fn(() => 
+            Promise.resolve({
+                status: 401,
+            })
+        )
+        // handle the case when sendDataToBackend returns 401
+        await wrapper.vm.sendDataToBackend()
+
+        await flushPromises();
+
+        expect(userDetailsStore.setIsLoggedIn).toHaveBeenCalledWith(false);
+        expect(userDetailsStore.userName).toBe('');
     })
 })
