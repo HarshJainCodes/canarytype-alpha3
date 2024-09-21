@@ -5,14 +5,7 @@ import TypingResultContainer from '../TypingResultContainer.vue'
 import { setActivePinia, createPinia } from 'pinia'
 import { useUserDetailsStore } from '@/stores/userDetails'
 import { useToast } from 'vue-toastification'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-    components,
-    directives
-})
+import { vuetify } from './TEST_CONSTANTS'
 
 vi.mock('@/stores/userDetails')
 vi.mock('vue-toastification')
