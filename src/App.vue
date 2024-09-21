@@ -4,10 +4,7 @@
         <v-main>
             <router-view v-slot="{ Component }">
                 <keep-alive>
-                    <component
-                        :is="Component"
-                        class="w-100 h-100"
-                    > </component>
+                    <component :is="Component" class="w-100 h-100"> </component>
                 </keep-alive>
             </router-view>
         </v-main>

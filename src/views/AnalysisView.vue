@@ -7,6 +7,6 @@ import { useUserDetailsStore } from '@/stores/userDetails'
 const userDetails = useUserDetailsStore()
 
 onMounted(() => {
-  userDetails.preventUnauthorizedRouteNavigation()
+    userDetails.preventUnauthorizedRouteNavigation()
 })
 </script>

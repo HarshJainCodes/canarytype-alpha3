@@ -8,29 +8,29 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    https: true,
-  },
-  plugins: [
-    vue({
-      template: { transformAssetUrls }
-    }),
-    vuetify(),
-    VueDevTools(),
-    mkcert(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  test:{
-    globals: true,
-    environment: 'jsdom',
     server: {
-      deps: {
-        inline: ['vuetify'],
-      }
+        https: true,
+    },
+    plugins: [
+        vue({
+            template: { transformAssetUrls }
+        }),
+        vuetify(),
+        VueDevTools(),
+        mkcert(),
+    ],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url))
+        }
+    },
+    test:{
+        globals: true,
+        environment: 'jsdom',
+        server: {
+            deps: {
+                inline: ['vuetify'],
+            }
+        }
     }
-  }
 })

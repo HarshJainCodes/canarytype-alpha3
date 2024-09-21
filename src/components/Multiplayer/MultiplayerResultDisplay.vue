@@ -3,16 +3,16 @@
         <div class="d-flex w-100 h-100 justify-center mx-5 flex-column">
             <div v-if="!noGoBack">
                 <v-btn :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea">
-                        Go Back
+                    Go Back
                 </v-btn>
             </div>
-    
+
             <div class="w-100 d-flex">
                 <!-- Yours -->
-                 <div class="d-flex flex-column w-100 h-100">
-                     <div class="w-100 d-flex text-h4 justify-center">
+                <div class="d-flex flex-column w-100 h-100">
+                    <div class="w-100 d-flex text-h4 justify-center">
                         {{ userDetails.userName }}
-                     </div>
+                    </div>
                     <v-card class="w-100 my-5 py-5" elevation="3">
                         <typing-result
                             :line-chart-data="lineChartData"
@@ -22,9 +22,9 @@
                     <div class="w-100 d-flex justify-center text-h5">
                         Typing speed: {{ Math.round(lineChartData[lineChartData.length - 1]) }} WPM!
                     </div>
-                 </div>
+                </div>
                 <!-- Opponent -->
-                 <div class="d-flex flex-column w-100 h-100">
+                <div class="d-flex flex-column w-100 h-100">
                     <div class="w-100 text-h4 d-flex justify-center">
                         {{ oppName }}
                     </div>
@@ -42,7 +42,8 @@
                         </div>
                     </v-card>
                     <div class="w-100 d-flex text-h5 justify-center">
-                        Typing speed: {{ Math.round(oppLineChartData[oppLineChartData.length - 1]) }} WPM!
+                        Typing speed:
+                        {{ Math.round(oppLineChartData[oppLineChartData.length - 1]) }} WPM!
                     </div>
                 </div>
             </div>
@@ -52,40 +53,40 @@
 
 <script>
 import { defineComponent } from 'vue'
-import TypingResult from '../TypingResult.vue';
-import { useUserDetailsStore } from '@/stores/userDetails';
+import TypingResult from '../TypingResult.vue'
+import { useUserDetailsStore } from '@/stores/userDetails'
 
 export default defineComponent({
     components: { TypingResult },
     props: {
         noGoBack: {
             type: Boolean,
-            default: () => false,
+            default: () => false
         },
         oppName: {
             type: String,
-            required: true,
+            required: true
         },
         lineChartData: {
             type: Array,
-            required: true,
+            required: true
         },
         rawLineChartData: {
             type: Array,
-            required: true,
+            required: true
         },
         oppLineChartData: {
             type: Array,
-            required: true,
+            required: true
         },
         oppRawLineChartData: {
             type: Array,
-            required: true,
+            required: true
         }
     },
     emits: ['navigate-to-pairing'],
     setup(props, { emit }) {
-        const userDetails = useUserDetailsStore();
+        const userDetails = useUserDetailsStore()
 
         const returnToTypingArea = () => {
             emit('navigate-to-pairing')
@@ -95,6 +96,6 @@ export default defineComponent({
             userDetails,
             returnToTypingArea
         }
-    },
+    }
 })
 </script>

@@ -2,7 +2,11 @@
     <div class="d-flex w-100 h-100" data-qa-id="typing-result-container">
         <div class="d-flex w-100 h-100 mx-5 flex-column justify-center">
             <div>
-                <v-btn data-qa-id="type-again-button" :prepend-icon="'mdi-arrow-left'" @click="returnToTypingArea(false)">
+                <v-btn
+                    data-qa-id="type-again-button"
+                    :prepend-icon="'mdi-arrow-left'"
+                    @click="returnToTypingArea(false)"
+                >
                     Type Again
                 </v-btn>
             </div>
@@ -63,10 +67,10 @@
 </template>
 
 <script setup>
-import { onActivated, ref } from 'vue';
+import { onActivated, ref } from 'vue'
 import TypingResult from './TypingResult.vue'
 import { useUserDetailsStore } from '@/stores/userDetails'
-import { useToast } from 'vue-toastification';
+import { useToast } from 'vue-toastification'
 
 const props = defineProps(['lineChartData', 'rawLineChartData', 'typingSpeed'])
 const emit = defineEmits('update:typingFinished')
@@ -74,16 +78,16 @@ const emit = defineEmits('update:typingFinished')
 const userDetails = useUserDetailsStore()
 const toast = useToast()
 
-const resultSentToDB = ref(false);
+const resultSentToDB = ref(false)
 
 onActivated(() => {
-    if (!resultSentToDB.value && userDetails.isLoggedIn){
-        sendDataToBackend();
+    if (!resultSentToDB.value && userDetails.isLoggedIn) {
+        sendDataToBackend()
     }
 })
 
 const returnToTypingArea = () => {
-    resultSentToDB.value = false;
+    resultSentToDB.value = false
     emit('update:typingFinished', false)
 }
 
@@ -103,13 +107,13 @@ const sendDataToBackend = async () => {
         credentials: 'include'
     })
 
-    if (call.status == 200){
+    if (call.status == 200) {
         toast('Result Saved Successfully', {
             type: 'success'
         })
-        resultSentToDB.value = true;
+        resultSentToDB.value = true
     } else if (call.status === 401) {
-        userDetails.setIsLoggedIn(false);
+        userDetails.setIsLoggedIn(false)
         userDetails.userName = ''
     }
 }

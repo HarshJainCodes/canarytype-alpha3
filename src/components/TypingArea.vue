@@ -1,6 +1,12 @@
 <template>
     <div class="w-100 h-100 position-relative">
-        <v-overlay width="100%" height="100%" :model-value="props.mode === 'multiplayer' && multiplayerCountdownTime > 0" contained persistent>
+        <v-overlay
+            width="100%"
+            height="100%"
+            :model-value="props.mode === 'multiplayer' && multiplayerCountdownTime > 0"
+            contained
+            persistent
+        >
             <div class="text-h5 d-flex justify-center align-center h-50">
                 Match Starts in {{ multiplayerCountdownTime }}
             </div>
@@ -10,17 +16,17 @@
             <v-card-title>
                 <div class="pt-10">{{ time }}</div>
             </v-card-title>
-    
-            <v-skeleton-loader type="paragraph" class="h-25" v-if="stringToType === ''">
+
+            <v-skeleton-loader type="paragraph" class="h-25" v-if="stringToType === undefined">
             </v-skeleton-loader>
             <v-card-text class="d-flex flex-column">
                 <div class="text-to-type text-h4">
                     <div class="text-to-type-1 text-disabled" data-qa-id="stringToType">
                         {{ stringToType }}
                     </div>
-    
+
                     <div class="resultDisplay"></div>
-    
+
                     <textarea
                         data-qa-id="typing-textarea"
                         style="font-family: myRobotoFont; resize: none"
@@ -40,8 +46,8 @@
 import { onDeactivated } from 'vue'
 import { onActivated } from 'vue'
 import { ref, onMounted, defineEmits } from 'vue'
-import { useRandomWords } from '@/Queries/ArenaQueries';
-import { useQueryClient } from '@tanstack/vue-query';
+import { useRandomWords } from '@/Queries/ArenaQueries'
+import { useQueryClient } from '@tanstack/vue-query'
 
 const INITIAL_TIME = 20
 
@@ -53,8 +59,8 @@ const multiplayerCountdownTime = ref(5)
 let multiplayerCountdownTimer
 
 const props = defineProps({
-    mode: String,
-});
+    mode: String
+})
 
 const emit = defineEmits([
     'update:typingFinished',
@@ -68,14 +74,14 @@ const rawWordsTypedPerSecond = new Array(time.value).fill('')
 const typingSpeedPerSecond = new Array(time.value).fill(0)
 const rawTypingSpeedPerSecond = new Array(time.value).fill(0)
 
-const randomWords = useRandomWords();
-const queryClient = useQueryClient();
+const randomWords = useRandomWords()
+const queryClient = useQueryClient()
 
 const stringToType = randomWords.data
 
 onActivated(() => {
     if (typingStarted.value === true) {
-        queryClient.invalidateQueries({ queryKey: ['randomWords']})
+        queryClient.invalidateQueries({ queryKey: ['randomWords'] })
         resetParams()
     }
 })
@@ -83,13 +89,13 @@ onActivated(() => {
 onMounted(() => {
     if (props.mode === 'multiplayer') {
         multiplayerCountdownTimer = setInterval(() => {
-            multiplayerCountdownTime.value--;
+            multiplayerCountdownTime.value--
             if (multiplayerCountdownTime.value <= 0) {
-                document.querySelector('textarea').focus();
+                document.querySelector('textarea').focus()
                 clearInterval(multiplayerCountdownTimer)
                 startTimer()
             }
-        }, 1000);
+        }, 1000)
     }
 })
 
@@ -217,7 +223,6 @@ const calculateTypingSpeedPerSecond = () => {
     emit('update:lineChartData', typingSpeedPerSecond)
     emit('update:rawLineChartData', rawTypingSpeedPerSecond)
 }
-
 </script>
 
 <style scoped>

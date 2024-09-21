@@ -27,7 +27,7 @@ const router = createRouter({
         {
             name: 'Profile',
             path: '/u/:username',
-            component: UserProfile,
+            component: UserProfile
         },
         {
             name: 'Analysis',
@@ -37,7 +37,7 @@ const router = createRouter({
         {
             name: 'MapVisualization',
             path: '/MapVisualization',
-            component: MapView,
+            component: MapView
         },
         {
             name: 'PlayOnline',
