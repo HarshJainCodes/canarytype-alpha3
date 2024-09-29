@@ -49,10 +49,12 @@ import { onActivated } from 'vue'
 import { ref, onMounted, defineEmits } from 'vue'
 import { useRandomWords } from '@/Queries/ArenaQueries'
 import { useQueryClient } from '@tanstack/vue-query'
+import { createUUID } from '@/Utils/HelperFunctions'
 
 const INITIAL_TIME = 20
 
 const typingStarted = ref(false)
+const randomWordsId = ref(createUUID())
 const time = ref(INITIAL_TIME)
 let timer
 
@@ -75,34 +77,10 @@ const rawWordsTypedPerSecond = new Array(time.value).fill('')
 const typingSpeedPerSecond = new Array(time.value).fill(0)
 const rawTypingSpeedPerSecond = new Array(time.value).fill(0)
 
-const randomWords = useRandomWords()
-const queryClient = useQueryClient()
+const randomWords = useRandomWords(randomWordsId)
+//const queryClient = useQueryClient()
 
 const stringToType = randomWords.data
-
-onActivated(() => {
-    if (typingStarted.value === true) {
-        queryClient.invalidateQueries({ queryKey: ['randomWords'] })
-        resetParams()
-    }
-})
-
-onMounted(() => {
-    if (props.mode === 'multiplayer') {
-        multiplayerCountdownTimer = setInterval(() => {
-            multiplayerCountdownTime.value--
-            if (multiplayerCountdownTime.value <= 0) {
-                document.querySelector('textarea').focus()
-                clearInterval(multiplayerCountdownTimer)
-                startTimer()
-            }
-        }, 1000)
-    }
-})
-
-onDeactivated(() => {
-    clearInterval(timer)
-})
 
 const resetParams = () => {
     stringToType.value = ''
@@ -114,26 +92,7 @@ const resetParams = () => {
     rawWordsTypedPerSecond.fill('')
 }
 
-const startTimer = (event) => {
-    if (!typingStarted.value) {
-        typingStarted.value = true
 
-        timer = setInterval(() => {
-            if (time.value > 1) {
-                time.value--
-            } else {
-                emit('update:typingFinished', true)
-                calculateTypingSpeed()
-                calculateTypingSpeedPerSecond()
-                clearInterval(timer)
-            }
-        }, 1000)
-    }
-    addSpanAroundText()
-    if (event) {
-        addWordsToTimestamp(event.key)
-    }
-}
 
 // todo optimise this text
 const addSpanAroundText = () => {
@@ -224,6 +183,52 @@ const calculateTypingSpeedPerSecond = () => {
     emit('update:lineChartData', typingSpeedPerSecond)
     emit('update:rawLineChartData', rawTypingSpeedPerSecond)
 }
+
+const startTimer = (event) => {
+    if (!typingStarted.value) {
+        typingStarted.value = true
+
+        timer = setInterval(() => {
+            if (time.value > 1) {
+                time.value--
+            } else {
+                emit('update:typingFinished', true)
+                calculateTypingSpeed()
+                calculateTypingSpeedPerSecond()
+                clearInterval(timer)
+            }
+        }, 1000)
+    }
+    addSpanAroundText()
+    if (event) {
+        addWordsToTimestamp(event.key)
+    }
+}
+
+onActivated(() => {
+    if (typingStarted.value === true) {
+        //queryClient.invalidateQueries({ queryKey: ['randomWords'] })
+        randomWordsId.value = createUUID()
+        resetParams()
+    }
+})
+
+onDeactivated(() => {
+    clearInterval(timer)
+})
+
+onMounted(() => {
+    if (props.mode === 'multiplayer') {
+        multiplayerCountdownTimer = setInterval(() => {
+            multiplayerCountdownTime.value--
+            if (multiplayerCountdownTime.value <= 0) {
+                document.querySelector('textarea').focus()
+                clearInterval(multiplayerCountdownTimer)
+                startTimer()
+            }
+        }, 1000)
+    }
+})
 </script>
 
 <style scoped>
