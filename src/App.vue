@@ -1,5 +1,6 @@
 <template>
     <v-app>
+        <top-nav-bar />
         <navigation-panels></navigation-panels>
         <v-main>
             <router-view v-slot="{ Component }">
@@ -13,6 +14,7 @@
 
 <script setup>
 import NavigationPanels from './components/NavigationPanels.vue'
+import TopNavBar from './components/TopNavBar.vue';
 </script>
 
 <style scoped></style>

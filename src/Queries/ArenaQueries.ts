@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/vue-query'
 import { BASE_BACKEND_URL } from './constants'
 
-export function useRandomWords() {
+export function useRandomWords(wordId) {
     return useQuery({
-        queryKey: ['randomWords'],
+        queryKey: ['randomWords', wordId],
         queryFn: async () => {
             const res = await fetch(`${BASE_BACKEND_URL}/api/TypingArena/RandomWords`)
 
