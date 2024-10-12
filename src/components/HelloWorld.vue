@@ -8,6 +8,9 @@ defineProps({
 </script>
 
 <template>
+    <div>
+        Modify the hello world file to see if azure will pick this change
+    </div>
     <div class="greetings">
         <h1 class="green">{{ msg }}</h1>
         <h3>
