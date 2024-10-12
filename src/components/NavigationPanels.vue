@@ -85,6 +85,14 @@ const navBarItems = computed(() => {
                 router.replace('/TypingArena')
             }
         },
+        {
+            name: 'PrimsAlgo',
+            icon: 'mdi-flask',
+            disabled: false,
+            clicked: () => {
+                router.replace('/PrimsAlgo')
+            }
+        },
         // {
         //     name: 'Analysis',
         //     icon: 'mdi-poll',

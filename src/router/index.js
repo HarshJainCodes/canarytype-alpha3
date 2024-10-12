@@ -5,6 +5,7 @@ import AnalysisView from '../views/AnalysisView.vue'
 import MapView from '../views/MapView.vue'
 import UserProfile from '../views/ProfileView.vue'
 import MultiplayerView from '@/views/MultiplayerView.vue'
+import PrimsAlgo from '@/views/PrimsAlgo.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,11 @@ const router = createRouter({
             name: 'PlayOnline',
             path: '/PlayOnline',
             component: MultiplayerView
+        },
+        {
+            name: 'PrimsAlgo',
+            path: '/PrimsAlgo',
+            component: PrimsAlgo
         }
     ]
 })
