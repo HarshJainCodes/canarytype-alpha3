@@ -110,17 +110,18 @@ const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
 }
 
 const onRegisterUser = async () => {
-    const res = await fetch('https://canarytype-alpha3.azurewebsites.net/api/Register', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify({
-            UserName: registerUserName.value,
-            password: registerPass.value
-        }),
-        credentials: 'include'
-    })
+    const res = await fetch(
+        'https://canarytype-alpha3.azurewebsites.net/api/Register', {
+        //'https://localhost:7161/api/Register', {
+
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                UserName: registerUserName.value,
+            }),
+        })
 
     const response = await res.json()
     console.log(response)
