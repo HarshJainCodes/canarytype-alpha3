@@ -16,6 +16,7 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     async function preventUnauthorizedRouteNavigation() {
         const loginCheckCall = await fetch(
             'https://canarytype-alpha3.azurewebsites.net/api/TypingArena/CheckLogin',
+            //'https://localhost:7161/api/TypingArena/CheckLogin',
             {
                 credentials: 'include'
             }
@@ -31,6 +32,7 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     onMounted(async () => {
         const call = await fetch(
             'https://canarytype-alpha3.azurewebsites.net/api/TypingArena/CheckLogin',
+            //'https://localhost:7161/api/TypingArena/CheckLogin',
             {
                 credentials: 'include'
             }
