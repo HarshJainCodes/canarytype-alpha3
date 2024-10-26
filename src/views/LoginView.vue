@@ -95,7 +95,7 @@ const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
 
     // need to make an api call to backend to check if user is new or existing
     const googleLoginCall = await fetch(
-        'https://localhost:7161/api/GoogleLogin', {
+        'https://canarytype-alpha3.azurewebsites.net/api/GoogleLogin', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
