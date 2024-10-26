@@ -7,6 +7,12 @@
                 <v-tab data-qa-id="login-tab"> Login </v-tab>
             </v-tabs>
         </div>
+
+        <div class="d-flex justify-center">
+            <google-login :callback="onGoogleAuthenticated">
+            </google-login>
+        </div>
+
         <v-window v-model="tabIndex">
             <v-window-item>
                 <login-container
@@ -47,7 +53,7 @@
     </v-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import LoginContainer from '../components/Authentication/LoginContainer.vue'
 import { useUserDetailsStore } from '@/stores/userDetails'
@@ -56,6 +62,7 @@ import { onActivated } from 'vue'
 import { useToast } from 'vue-toastification'
 import loginPageBg from '../assets/images/loginPageBg.png'
 import loginPageBg2 from '../assets/images/loginPageBg2.png'
+import type { CallbackTypes } from 'vue3-google-login'
 
 const router = useRouter()
 const userDetails = useUserDetailsStore()
@@ -80,6 +87,27 @@ onActivated(() => {
         router.push('/TypingArena')
     }
 })
+
+const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
+    console.log(res)
+    const client_id = res.clientId;
+    const google_jwt = res.credential;
+
+    // need to make an api call to backend to check if user is new or existing
+    const googleLoginCall = await fetch(
+        'https://localhost:7161/api/GoogleLogin', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                idToken: google_jwt
+            })
+        }
+    )
+
+    console.log(await googleLoginCall.json());
+}
 
 const onRegisterUser = async () => {
     const res = await fetch('https://canarytype-alpha3.azurewebsites.net/api/Register', {
