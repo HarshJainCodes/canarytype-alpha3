@@ -102,7 +102,8 @@ const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
             },
             body: JSON.stringify({
                 idToken: google_jwt
-            })
+            }),
+            credentials: 'include'
         }
     )
 
