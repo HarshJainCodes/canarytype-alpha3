@@ -1,101 +1,118 @@
 <template>
-    <v-card class="d-flex w-100 h-100 flex-column">
-        <div class="w-100">
-            <v-tabs align-tabs="center" v-model:model-value="tabIndex">
-                <v-tab> Register </v-tab>
-
-                <v-tab data-qa-id="login-tab"> Login </v-tab>
-            </v-tabs>
+    <div class="d-flex w-100 bg-teal-lighten-4 h-100">
+        <div class="bg-teal-lighten-4 h-100" style="width: 40%;">
+            <div class="text-h4 pa-10 text-white">
+                Compete with others in realtime and save your result 
+            </div>
+        </div>
+    
+        <div class="position-absolute" style="top: 20%; left: 10%;">
+            <v-img width="900" :src="random_shapes">
+            </v-img>
         </div>
 
-        <div class="d-flex justify-center">
-            <google-login :callback="onGoogleAuthenticated">
+        <div class="h-100 pa-5 bg-white d-flex flex-column align-center justify-center" style="width: 60%;">
+            <div class="text-h4 pt-10 font-weight-bold text-center">
+                <div v-if="currentView === LoginModes.CreateAccount">
+                    CREATE ACCOUNT
+                </div>
+                <div v-if="currentView === LoginModes.LoginToAccount">
+                    WELCOME BACK
+                </div>
+            </div>
+
+            <google-login class="pa-10" :callback="onGoogleAuthenticated" popup-type="TOKEN" ux-mode="redirect">
+                <v-btn prepend-icon="mdi-google" color="teal-lighten-4" size="large">
+                    Continue With Google
+                </v-btn>
             </google-login>
+
+            <div class="text-h5 text-blue-grey-lighten-3 text-center">
+                - OR -
+            </div>
+
+            <div class="w-50 d-flex flex-column pt-5">
+                <v-text-field v-model="userName" label="UserName" type="text" variant="underlined"></v-text-field>
+                <v-text-field v-model="email" label="Email" type="email" variant="underlined"></v-text-field>
+                <v-text-field v-model="password"
+                              label="Password"
+                              :type="showPassword ? 'text' : 'password'" 
+                              :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
+                              @click:append-inner="onClickPasswordEye"
+                              variant="underlined"
+                ></v-text-field>
+            </div>
+
+            <v-btn color="teal-lighten-4 w-50 border-radius-10" border="md" rounded size="x-large" @click="onClickLoginOrRegister">
+                <div class="text-white h-100">
+                    <div v-if="currentView === LoginModes.CreateAccount">
+                        CREATE ACCOUNT
+                    </div>
+                    <div v-if="currentView === LoginModes.LoginToAccount">
+                        LOGIN
+                    </div>
+                </div>
+            </v-btn>
+            <div class="text-h5 pa-5">
+                <div v-if="currentView === LoginModes.CreateAccount">
+                    Already have an account? <span class="text-teal-lighten-2 login-custom-class" 
+                                                   @click="onClickAlreadyHaveAnAccountOrSignup"> Login </span>
+                </div>
+                <div v-if="currentView === LoginModes.LoginToAccount">
+                    Don't have an account? <span class="text-teal-lighten-2 login-custom-class" @click="onClickAlreadyHaveAnAccountOrSignup">Sign Up</span>
+                </div>
+            </div>
         </div>
-
-        <v-window v-model="tabIndex">
-            <v-window-item>
-                <login-container
-                    :content-width="65"
-                    :image-width="35"
-                    :image-url="loginPageBg"
-                    @update:user-name="registerUserName = $event"
-                    @update:password="registerPass = $event"
-                    @onSubmit="onRegisterUser"
-                >
-                    <template #heading> Create Account </template>
-
-                    <template #passSuggestion>
-                        <div class="text-h8 mt-0">
-                            Use 8 or more characters with a mix of letters numbers & symbols
-                        </div>
-                    </template>
-
-                    <template #actionBtn> Create Account </template>
-                </login-container>
-            </v-window-item>
-
-            <v-window-item>
-                <login-container
-                    :content-width="65"
-                    :image-width="35"
-                    :image-url="loginPageBg2"
-                    @update:user-name="loginUserName = $event"
-                    @update:password="loginPass = $event"
-                    @on-submit="onLoginUser"
-                >
-                    <template #heading> Welcome Back </template>
-
-                    <template #actionBtn> Login </template>
-                </login-container>
-            </v-window-item>
-        </v-window>
-    </v-card>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import LoginContainer from '../components/Authentication/LoginContainer.vue'
 import { useUserDetailsStore } from '@/stores/userDetails'
 import { useRouter } from 'vue-router'
 import { onActivated } from 'vue'
-import { useToast } from 'vue-toastification'
-import loginPageBg from '../assets/images/loginPageBg.png'
-import loginPageBg2 from '../assets/images/loginPageBg2.png'
+import { TYPE, useToast } from 'vue-toastification'
+import random_shapes from '../assets/images/random_shapes.png'
 import type { CallbackTypes } from 'vue3-google-login'
+import { LoginModes } from './Constants'
 
 const router = useRouter()
 const userDetails = useUserDetailsStore()
 const toast = useToast()
 
-const tabIndex = ref(0)
-const registerUserName = ref('')
-const loginUserName = ref('')
-
-const registerPass = ref('')
-
-const loginPass = ref('')
+const userName = ref('')
+const email = ref('')
+const password = ref('')
 
 onMounted(() => {
-    // if already logged in then send to typing Arena
 })
 
 onActivated(() => {
-    console.log('on activating login view')
-    console.log(userDetails.isLoggedIn)
-    if (userDetails.isLoggedIn) {
-        router.push('/TypingArena')
-    }
+
 })
 
-const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
-    console.log(res)
-    const client_id = res.clientId;
-    const google_jwt = res.credential;
+const showPassword = ref(false);
+const currentView = ref(LoginModes.CreateAccount);
 
-    // need to make an api call to backend to check if user is new or existing
+const onClickPasswordEye = () => {
+    showPassword.value = !showPassword.value
+}
+
+const onClickAlreadyHaveAnAccountOrSignup = () => {
+    if (currentView.value === LoginModes.CreateAccount){
+        currentView.value = LoginModes.LoginToAccount;
+    }else if (currentView.value === LoginModes.LoginToAccount){
+        currentView.value = LoginModes.CreateAccount
+    }
+}
+
+const onGoogleAuthenticated: CallbackTypes.TokenResponseCallback = async (res) => {
+    console.log(res);
+    const google_jwt = res.access_token;
+
     const googleLoginCall = await fetch(
         'https://canarytype-alpha3.azurewebsites.net/api/GoogleLogin', {
+        // 'https://localhost:7161/api/GoogleLogin', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -107,61 +124,86 @@ const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
         }
     )
 
-    console.log(await googleLoginCall.json());
-}
+    const response = await googleLoginCall.json();
 
-const onRegisterUser = async () => {
-    const res = await fetch(
-        'https://canarytype-alpha3.azurewebsites.net/api/Register', {
-        //'https://localhost:7161/api/Register', {
-
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify({
-                UserName: registerUserName.value,
-            }),
-        })
-
-    const response = await res.json()
-    console.log(response)
-
-    if (res.status === 200) {
-        localStorage.setItem('canaryalpha3Username', registerUserName.value)
+    if (googleLoginCall.status === 200){
+        localStorage.setItem("canaryalpha3Username", response.userName)
         userDetails.setIsLoggedIn(true)
-        userDetails.userName = registerUserName.value
+        userDetails.userName = response.userName
         router.push('TypingArena')
     }
 }
 
-const onLoginUser = async () => {
-    const res = await fetch('https://canarytype-alpha3.azurewebsites.net/api/Login', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify({
-            UserName: loginUserName.value,
-            Password: loginPass.value
-        }),
-        credentials: 'include'
-    })
+const onClickLoginOrRegister = async () => {
+    if (currentView.value === LoginModes.LoginToAccount){
+        const createAccountCall = await fetch(
+            'https://canarytype-alpha3.azurewebsites.net/api/Login', {
+            // 'https://localhost:7161/api/Login', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({
+                    UserName: userName.value,
+                    Email: email.value,
+                    Password: password.value
+                }),
+                credentials: 'include'
+            })
 
-    const response = await res.json()
+        if (createAccountCall.status === 400){
+            toast("Invalid Password for given Username and Email", {
+                type: TYPE.ERROR
+            });
+        } else if (createAccountCall.status === 404) {
+            toast("User with given Username and Email not found", {
+                type: TYPE.ERROR
+            });
+        } else if (createAccountCall.status === 200){
+            toast("Logged in Successfully", {
+                type: TYPE.SUCCESS
+            });
+            localStorage.setItem("canaryalpha3Username", userName.value)
+            userDetails.setIsLoggedIn(true)
+            userDetails.userName = userName.value
+            router.push('TypingArena')
+        }
+    } else if (currentView.value === LoginModes.CreateAccount){
+        const createAccountCall = await fetch(
+            'https://canarytype-alpha3.azurewebsites.net/api/Register', {
+            // 'https://localhost:7161/api/Register', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify({
+                    UserName: userName.value,
+                    Email: email.value,
+                    Password: password.value
+                }),
+                credentials: 'include'
+            })
 
-    if (res.status === 200) {
-        localStorage.setItem('canaryalpha3Username', loginUserName.value)
-
-        userDetails.setIsLoggedIn(true)
-        userDetails.userName = loginUserName.value
-        router.push('TypingArena')
-    } else if (res.status === 404) {
-        toast.error('Invalid username or password')
-        console.log('invalid username or password')
-    } else {
-        console.log('some unknown error occured')
-        console.log(response)
+        if (createAccountCall.status === 409){
+            toast("User Already exists for given Email", {
+                type: TYPE.ERROR
+            });
+        } else if (createAccountCall.status === 200){
+            toast("Registered Successfully", {
+                type: TYPE.SUCCESS
+            });
+            localStorage.setItem("canaryalpha3Username", userName.value)
+            userDetails.setIsLoggedIn(true)
+            userDetails.userName = userName.value
+            router.push('TypingArena')
+        }
     }
 }
+
 </script>
+
+<style scoped>
+.login-custom-class:hover{
+cursor: pointer;
+}
+</style>
