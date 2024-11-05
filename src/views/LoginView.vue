@@ -85,6 +85,7 @@ const email = ref('')
 const password = ref('')
 
 onMounted(() => {
+    // I have added this comment to test if i get any merge conflicts
 })
 
 onActivated(() => {
