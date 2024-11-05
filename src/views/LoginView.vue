@@ -89,7 +89,7 @@ onMounted(() => {
 })
 
 onActivated(() => {
-
+    // I have added this comment to test if i get any merge conflicts
 })
 
 const showPassword = ref(false);
