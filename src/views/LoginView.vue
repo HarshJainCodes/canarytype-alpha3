@@ -91,6 +91,7 @@ onMounted(() => {
 onActivated(() => {
     // I have added this comment to test if i get any merge conflicts
     // adding second line.
+    // Confirming test
 })
 
 const showPassword = ref(false);
