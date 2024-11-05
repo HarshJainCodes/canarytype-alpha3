@@ -86,11 +86,13 @@ const password = ref('')
 
 onMounted(() => {
     // I have added this comment to test if i get any merge conflicts
+    // Confirming test
 })
 
 onActivated(() => {
     // I have added this comment to test if i get any merge conflicts
     // adding second line.
+    // Confirming test
 })
 
 const showPassword = ref(false);
