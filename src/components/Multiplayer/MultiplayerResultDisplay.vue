@@ -11,7 +11,7 @@
                 <!-- Yours -->
                 <div class="d-flex flex-column w-100 h-100">
                     <div class="w-100 d-flex text-h4 justify-center">
-                        {{ userDetails.userName }}
+                        {{ userDetails.userName }} (You)
                     </div>
                     <v-card class="w-100 my-5 py-5" elevation="3">
                         <typing-result
@@ -22,6 +22,9 @@
                     <div class="w-100 d-flex justify-center text-h5">
                         Typing speed: {{ Math.round(lineChartData[lineChartData.length - 1]) }} WPM!
                     </div>
+                </div>
+                <div class="text-h4">
+                    VS
                 </div>
                 <!-- Opponent -->
                 <div class="d-flex flex-column w-100 h-100">

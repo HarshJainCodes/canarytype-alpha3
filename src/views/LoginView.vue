@@ -85,14 +85,11 @@ const email = ref('')
 const password = ref('')
 
 onMounted(() => {
-    // I have added this comment to test if i get any merge conflicts
-    // Confirming test
+
 })
 
 onActivated(() => {
-    // I have added this comment to test if i get any merge conflicts
-    // adding second line.
-    // Confirming test
+
 })
 
 const showPassword = ref(false);
@@ -111,7 +108,6 @@ const onClickAlreadyHaveAnAccountOrSignup = () => {
 }
 
 const onGoogleAuthenticated: CallbackTypes.TokenResponseCallback = async (res) => {
-    console.log(res);
     const google_jwt = res.access_token;
 
     const googleLoginCall = await fetch(
@@ -131,9 +127,9 @@ const onGoogleAuthenticated: CallbackTypes.TokenResponseCallback = async (res) =
     const response = await googleLoginCall.json();
 
     if (googleLoginCall.status === 200){
-        localStorage.setItem("canaryalpha3Username", response.userName)
         userDetails.setIsLoggedIn(true)
         userDetails.userName = response.userName
+        userDetails.uniqueUserName = response.uniqueUserName
         router.push('TypingArena')
     }
 }

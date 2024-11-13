@@ -2,7 +2,7 @@
     <v-app>
         <top-nav-bar />
         <navigation-panels></navigation-panels>
-        <v-main>
+        <v-main style="max-height: 100vh;">
             <router-view v-slot="{ Component }">
                 <keep-alive>
                     <component :is="Component" class="w-100 h-100"> </component>

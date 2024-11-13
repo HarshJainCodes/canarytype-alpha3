@@ -71,7 +71,7 @@ const navBarItems = computed(() => {
             disabled: userDetails.isPlayingMultiplayer,
             clicked: () => {
                 if (userDetails.isLoggedIn) {
-                    router.push(`/u/${userDetails.userName}`)
+                    router.push(`/u/${userDetails.uniqueUserName}`)
                 } else {
                     router.replace('/Login')
                 }
@@ -116,7 +116,7 @@ const navBarItems = computed(() => {
             clicked: () => {
                 router.replace('/PlayOnline')
             }
-        }
+        },
     ]
 })
 </script>
