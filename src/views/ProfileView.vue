@@ -408,7 +408,6 @@ export default defineComponent({
 
         return {
             tabIndex,
-            githubContributions,
             userDetails,
             datesFrequency,
             userName,
