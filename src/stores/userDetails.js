@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 export const useUserDetailsStore = defineStore('userDetails', () => {
     const router = useRouter()
     const userName = ref('')
+    const uniqueUserName = ref('')
+    const userProfilePicUrl = ref('')
 
     const isLoggedIn = ref(false)
     const isPlayingMultiplayer = ref(false)
@@ -32,7 +34,7 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     onMounted(async () => {
         const call = await fetch(
             'https://canarytype-alpha3.azurewebsites.net/api/TypingArena/CheckLogin',
-            //'https://localhost:7161/api/TypingArena/CheckLogin',
+            // 'https://localhost:7161/api/TypingArena/CheckLogin',
             {
                 credentials: 'include'
             }
@@ -42,8 +44,11 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
             userName.value = ''
             setIsLoggedIn(false)
         } else if (call.status === 200) {
-            userName.value = localStorage.getItem('canaryalpha3Username')
-            console.log('setting isloggedin to true')
+            const response = await call.json();
+            userName.value = response.userName;
+            uniqueUserName.value = response.uniqueUserName;
+            userProfilePicUrl.value = response.profilePicUrl;
+
             setIsLoggedIn(true)
         }
     })
@@ -51,6 +56,8 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     return {
         isLoggedIn,
         userName,
+        uniqueUserName,
+        userProfilePicUrl,
         isPlayingMultiplayer,
         setIsLoggedIn,
         preventUnauthorizedRouteNavigation

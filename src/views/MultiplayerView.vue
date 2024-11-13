@@ -176,7 +176,7 @@ export default defineComponent({
 
                 conn.value.on('MatchStarted', (groupName, player1, player2) => {
                     roomId.value = groupName
-                    if (player1.userName === userDetails.userName) {
+                    if (player1.userName === userDetails.uniqueUserName) {
                         opponent.value = player2.userName
                     } else {
                         opponent.value = player1.userName
@@ -185,7 +185,7 @@ export default defineComponent({
 
                 conn.value.on('MatchResult', (matchInfo) => {
                     console.log(matchInfo)
-                    if (matchInfo.player1Name === userDetails.userName) {
+                    if (matchInfo.player1Name === userDetails.uniqueUserName) {
                         oppLineChartData.value = matchInfo.player2Submissions
                         oppRawLineChartData.value = matchInfo.player2SubmissionsRaw
                     } else {
@@ -196,7 +196,7 @@ export default defineComponent({
 
                 await conn.value.start()
                 await conn.value.invoke('JoinPrivateRoomWithCode', {
-                    userName: userDetails.userName,
+                    userName: userDetails.uniqueUserName,
                     roomCode: privateRoomText.value
                 })
             } catch (e) {
@@ -236,7 +236,7 @@ export default defineComponent({
 
                     conn.value.on('MatchStarted', (groupName, player1, player2) => {
                         roomId.value = groupName
-                        if (player1.userName === userDetails.userName) {
+                        if (player1.userName === userDetails.uniqueUserName) {
                             opponent.value = player2.userName
                         } else {
                             opponent.value = player1.userName
@@ -245,7 +245,7 @@ export default defineComponent({
 
                     conn.value.on('MatchResult', (matchInfo) => {
                         console.log(matchInfo)
-                        if (matchInfo.player1Name === userDetails.userName) {
+                        if (matchInfo.player1Name === userDetails.uniqueUserName) {
                             oppLineChartData.value = matchInfo.player2Submissions
                             oppRawLineChartData.value = matchInfo.player2SubmissionsRaw
                         } else {
@@ -256,7 +256,7 @@ export default defineComponent({
 
                     await conn.value.start()
                     console.log('starting connection')
-                    await conn.value.invoke('CreatePrivateRoom', { username: userDetails.userName })
+                    await conn.value.invoke('CreatePrivateRoom', { username: userDetails.uniqueUserName })
                 } catch (e) {
                     console.log(e)
                 }
@@ -287,7 +287,7 @@ export default defineComponent({
 
                 conn.value.on('MatchStarted', (groupName, player1, player2) => {
                     roomId.value = groupName
-                    if (player1.userName === userDetails.userName) {
+                    if (player1.userName === userDetails.uniqueUserName) {
                         opponent.value = player2.userName
                     } else {
                         opponent.value = player1.userName
@@ -296,7 +296,7 @@ export default defineComponent({
 
                 conn.value.on('MatchResult', (matchInfo) => {
                     console.log(matchInfo)
-                    if (matchInfo.player1Name === userDetails.userName) {
+                    if (matchInfo.player1Name === userDetails.uniqueUserName) {
                         oppLineChartData.value = matchInfo.player2Submissions
                         oppRawLineChartData.value = matchInfo.player2SubmissionsRaw
                     } else {
@@ -307,7 +307,7 @@ export default defineComponent({
 
                 await conn.value.start()
                 await conn.value.invoke('JoinChat', {
-                    username: userDetails.userName,
+                    username: userDetails.uniqueUserName,
                     password: 'something'
                 })
             } catch (e) {
@@ -342,7 +342,7 @@ export default defineComponent({
                     await conn.value.invoke(
                         'ClientSubmitResult',
                         roomId.value,
-                        userDetails.userName,
+                        userDetails.uniqueUserName,
                         lineChartData.value,
                         rawLineChartData.value
                     )
