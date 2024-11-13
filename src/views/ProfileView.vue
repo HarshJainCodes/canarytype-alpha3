@@ -243,7 +243,7 @@
                                                 <v-card class="w-100 h-100 d-flex justify-center align-center elevation-4">
                                                     <v-dialog class="w-100 h-100 d-flex justify-center">
                                                         <template #activator="{ props }">
-                                                            <div class="w-100 h-25 d-flex flex-column justify-center align-center">
+                                                            <div v-if="currOnlineSelectedMatch" class="w-100 h-25 d-flex flex-column justify-center align-center">
                                                                 <div class="text-h5 text-center">
                                                                     {{ userName }} VS {{ currOnlineSelectedMatch.player1Name === userName
                                                                         ? currOnlineSelectedMatch.player2Name
