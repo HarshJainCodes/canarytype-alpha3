@@ -16,6 +16,9 @@ import 'vue-toastification/dist/index.css'
 // tanstack
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
+// google login
+import vue3GoogleLogin from 'vue3-google-login';
+
 import App from './App.vue'
 import router from './router'
 
@@ -36,5 +39,8 @@ app.use(router)
 app.use(vuetify)
 app.use(Toast, toastOptions)
 app.use(VueQueryPlugin)
+app.use(vue3GoogleLogin, {
+    clientId: '614723879813-ucnacak95ele14f5fjbqop6f3d8l9a3q'
+})
 
 app.mount('#app')

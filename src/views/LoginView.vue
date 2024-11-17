@@ -7,6 +7,9 @@
                 <v-tab data-qa-id="login-tab"> Login </v-tab>
             </v-tabs>
         </div>
+        <div class="d-flex justify-center">
+            <google-login :callback="onSignInFromGoogle"></google-login>
+        </div>
         <v-window v-model="tabIndex">
             <v-window-item>
                 <login-container
@@ -80,6 +83,10 @@ onActivated(() => {
         router.push('/TypingArena')
     }
 })
+
+const onSignInFromGoogle = (response) => {
+    console.log(response)
+}
 
 const onRegisterUser = async () => {
     const res = await fetch('https://canarytype-alpha3.azurewebsites.net/api/Register', {
