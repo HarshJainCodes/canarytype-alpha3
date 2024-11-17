@@ -105,7 +105,9 @@ export default defineComponent({
 
 <style>
 .graph_cell{
-border: 1px solid black;
+/* border: 1px solid black;
+border-radius: 3px; */
+background-color: #e4e4e4;
 border-radius: 3px;
 }
 
@@ -114,6 +116,6 @@ border-radius: 3px;
 }
 
 .one_contribution{
-    background-color: lightgreen;
+    background-color: rgb(0, 251, 0);
 }
 </style>
