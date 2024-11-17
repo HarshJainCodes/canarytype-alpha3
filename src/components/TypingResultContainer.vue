@@ -80,12 +80,6 @@ const toast = useToast()
 
 const resultSentToDB = ref(false)
 
-onActivated(() => {
-    if (!resultSentToDB.value && userDetails.isLoggedIn) {
-        sendDataToBackend()
-    }
-})
-
 const returnToTypingArea = () => {
     resultSentToDB.value = false
     emit('update:typingFinished', false)
@@ -97,7 +91,7 @@ const sendDataToBackend = async () => {
         body: JSON.stringify({
             submissionDate: new Date(),
             score: props.typingSpeed,
-            username: userDetails.userName,
+            username: userDetails.uniqueUserName,
             typingSpeedPerSecond: props.lineChartData,
             rawTypingSpeedPerSecond: props.rawLineChartData
         }),
@@ -117,4 +111,10 @@ const sendDataToBackend = async () => {
         userDetails.userName = ''
     }
 }
+
+onActivated(() => {
+    if (!resultSentToDB.value && userDetails.isLoggedIn) {
+        sendDataToBackend()
+    }
+})
 </script>

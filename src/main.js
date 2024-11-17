@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import vue3GoogleLogin from 'vue3-google-login'
 
 //vuetify
 import 'vuetify/styles'
@@ -15,9 +16,6 @@ import 'vue-toastification/dist/index.css'
 
 // tanstack
 import { VueQueryPlugin } from '@tanstack/vue-query'
-
-// google login
-import vue3GoogleLogin from 'vue3-google-login';
 
 import App from './App.vue'
 import router from './router'
