@@ -7,6 +7,8 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
     const userName = ref('')
     const uniqueUserName = ref('')
     const userProfilePicUrl = ref('')
+    const personalBestWPM = ref(0)
+    const averageWPM = ref(0)
 
     const isLoggedIn = ref(false)
     const isPlayingMultiplayer = ref(false)
@@ -59,6 +61,8 @@ export const useUserDetailsStore = defineStore('userDetails', () => {
         uniqueUserName,
         userProfilePicUrl,
         isPlayingMultiplayer,
+        personalBestWPM,
+        averageWPM,
         setIsLoggedIn,
         preventUnauthorizedRouteNavigation
     }
