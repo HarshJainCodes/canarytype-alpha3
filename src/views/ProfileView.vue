@@ -353,9 +353,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
-$tooltip-background-color: green;
-
+<style>
 .background-image{
     --opacity: 0.5;
     background-image: linear-gradient(-45deg, rgba(238, 118, 82, var(--opacity)), rgba(231, 60, 126, var(--opacity)), rgba(35, 166, 213, var(--opacity)), rgba(35, 213, 171, var(--opacity)));
