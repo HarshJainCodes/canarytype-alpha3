@@ -1,4 +1,4 @@
-export enum LoginModes{
-    CreateAccount,
-    LoginToAccount
+export enum LoginModes {
+	CreateAccount,
+	LoginToAccount,
 }
