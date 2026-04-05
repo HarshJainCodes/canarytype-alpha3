@@ -83,6 +83,7 @@ const resultSentToDB = ref(false);
 const returnToTypingArea = () => {
 	resultSentToDB.value = false;
 	emit('update:typingFinished', false);
+	console.log('Hi');
 };
 
 const sendDataToBackend = async () => {
