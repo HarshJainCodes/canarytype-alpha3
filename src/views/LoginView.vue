@@ -14,6 +14,7 @@ import { useRouter } from 'vue-router';
 import { TYPE, useToast } from 'vue-toastification';
 import type { CallbackTypes } from 'vue3-google-login';
 import { LoginPageV2 } from 'corecomponentshj';
+import { BASE_BACKEND_URL } from '@/Queries/constants';
 
 const router = useRouter();
 const userDetails = useUserDetailsStore();
@@ -21,11 +22,11 @@ const toast = useToast();
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-const onGoogleAuthenticated: CallbackTypes.TokenResponseCallback = async (res) => {
-	const google_jwt = res.access_token;
+const onGoogleAuthenticated: CallbackTypes.CredentialCallback = async (res) => {
+	const google_jwt = res.credential;
 
 	const googleLoginCall = await fetch(
-		'https://canarytype-alpha3.azurewebsites.net/api/GoogleLogin',
+		`${BASE_BACKEND_URL}/api/GoogleLogin`,
 		{
 			// 'https://localhost:7161/api/GoogleLogin', {
 			method: 'POST',

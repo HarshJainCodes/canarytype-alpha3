@@ -21,7 +21,7 @@
         "@typescript-eslint/eslint-plugin": "^8.3.0",
         "@typescript-eslint/parser": "^8.3.0",
         "chart.js": "^4.4.3",
-        "corecomponentshj": "^1.2.1",
+        "corecomponentshj": "1.2.2",
         "deck.gl": "^9.0.23",
         "mapbox-gl": "^3.5.2",
         "pinia": "^2.1.7",
